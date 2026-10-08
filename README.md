@@ -1,4 +1,4 @@
-Proyecto Capstone: ...
+Proyecto Capstone: Essenzia
 
 ARCHIVO README
 
@@ -14,7 +14,13 @@ Institución: DUOC UC
 
 
 * Descripción del Proyecto
-...
+---
+Solución web integral para la venta de perfumes, mitigando la barrera de la compra a ciegas mediante herramientas interactivas.
+* Essenzia Match: Motor algorítmico de perfilado del usuario y recomendación basado en cuestionarios interactivos.
+* Visualizador Interactivo: Desglose dinámico de la pirámide olfativa (notas de salida, corazón y fondo).
+* Proyección Temporal: Control deslizante que simula el secado, estela y duración en piel.
+* Arquitectura Completa: Gestión de inventario, autenticación, y pasarela de pago. 
+
 
 ---
 
