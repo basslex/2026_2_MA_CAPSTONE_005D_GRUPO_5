@@ -1,0 +1,428 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Descubre los detalles, notas olfativas y evolución de las fragancias de Essenzia."
+    >
+
+    <title>Detalle de perfume | Essenzia</title>
+
+    <!-- ESTILOS PRINCIPALES -->
+    <link
+        rel="stylesheet"
+        href="../../css/style.css"
+    >
+
+    <!-- FUENTES -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- JAVASCRIPT -->
+    <script
+        type="module"
+        src="../../js/detalle.js"
+    ></script>
+
+</head>
+
+<body>
+
+    <!-- =====================================
+         BARRA SUPERIOR
+    ====================================== -->
+
+    <div class="announcement">
+        PERFUMERÍA DE AUTOR · DESCUBRE TU FRAGANCIA IDEAL
+    </div>
+
+
+    <!-- =====================================
+         ENCABEZADO
+    ====================================== -->
+
+    <header class="header">
+
+        <div class="container header-main">
+
+            <!-- LOGO ESSENZIA -->
+            <a
+                class="brand brand-logo"
+                href="../../index.html"
+                aria-label="Essenzia - Ir al inicio"
+            >
+
+                <img
+                    class="logo-img"
+                    src="../../img/logo-essenzia.jpg"
+                    alt="Logo de Essenzia"
+                >
+
+            </a>
+
+            <!-- REGRESAR AL CATÁLOGO -->
+            <a
+                class="button secondary"
+                href="../../index.html#catalogo"
+            >
+                ← Volver al catálogo
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================
+         CONTENIDO PRINCIPAL
+    ====================================== -->
+
+    <main class="detail-page">
+
+        <div class="container">
+
+            <!-- NAVEGACIÓN -->
+            <a
+                class="detail-back"
+                href="../../index.html#catalogo"
+            >
+                ← Volver a los perfumes
+            </a>
+
+
+            <!-- =====================================
+                 INFORMACIÓN DEL PERFUME
+            ====================================== -->
+
+            <section
+                id="product-detail"
+                aria-label="Información del perfume"
+            >
+
+                <p>Cargando perfume...</p>
+
+            </section>
+
+
+            <!-- =====================================
+                 PIRÁMIDE OLFATIVA INTERACTIVA
+            ====================================== -->
+
+            <section
+                class="olfactory-section"
+                id="olfactory-section"
+                aria-label="Experiencia olfativa"
+                hidden
+            >
+
+                <!-- TÍTULO -->
+                <div class="olfactory-heading">
+
+                    <span class="eyebrow">
+                        DESCUBRE SU ESENCIA
+                    </span>
+
+                    <h2>Pirámide olfativa</h2>
+
+                    <p>
+                        Explora cómo evoluciona la fragancia
+                        desde la primera aplicación.
+                    </p>
+
+                </div>
+
+
+                <!-- =====================================
+                     EXPERIENCIA INTERACTIVA
+                ====================================== -->
+
+                <div class="olfactory-experience">
+
+                    <!-- ENCABEZADO DE EXPERIENCIA -->
+                    <div class="experience-heading">
+
+                        <div class="experience-heading-content">
+
+                            <span class="experience-label">
+
+                                <span
+                                    class="experience-sparkle"
+                                    aria-hidden="true"
+                                >
+                                    ✦
+                                </span>
+
+                                EXPERIENCIA INTERACTIVA
+
+                            </span>
+
+                            <h3>
+                                Descubre cómo evoluciona
+                            </h3>
+
+                            <p>
+                                Explora la transformación de tu
+                                fragancia, desde la primera
+                                impresión hasta su esencia
+                                más profunda.
+                            </p>
+
+                        </div>
+
+
+                        <!-- CONTADOR -->
+                        <span
+                            class="experience-counter"
+                            id="experience-counter"
+                        >
+                            Etapa 1 de 3
+                        </span>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         INFORMACIÓN DEL PROGRESO
+                    ====================================== -->
+
+                    <div class="experience-progress-header">
+
+                        <span class="experience-progress-title">
+
+                            <span
+                                class="experience-dot"
+                                aria-hidden="true"
+                            ></span>
+
+                            Evolución olfativa
+
+                        </span>
+
+                        <span
+                            class="experience-percent"
+                            id="experience-percent"
+                        >
+                            0%
+                        </span>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         BARRA DE PROGRESO
+                    ====================================== -->
+
+                    <div
+                        class="experience-progress"
+                        id="experience-progress"
+                        role="progressbar"
+                        aria-label="Progreso de la experiencia olfativa"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="0"
+                    >
+
+                        <div
+                            class="experience-progress-fill"
+                            id="experience-progress-fill"
+                        ></div>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         INDICADORES DE ETAPAS
+                    ====================================== -->
+
+                    <div class="experience-stages">
+
+                        <span>
+
+                            <span
+                                class="stage-dot"
+                                aria-hidden="true"
+                            ></span>
+
+                            Salida
+
+                        </span>
+
+                        <span>
+
+                            <span
+                                class="stage-dot"
+                                aria-hidden="true"
+                            ></span>
+
+                            Corazón
+
+                        </span>
+
+                        <span>
+
+                            <span
+                                class="stage-dot"
+                                aria-hidden="true"
+                            ></span>
+
+                            Fondo
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         BOTONES DE CONTROL
+                    ====================================== -->
+
+                    <div class="experience-controls">
+
+                        <!-- INICIAR -->
+                        <button
+                            type="button"
+                            class="experience-button primary"
+                            id="experience-start"
+                        >
+
+                            <span aria-hidden="true">
+                                ▶
+                            </span>
+
+                            Iniciar experiencia
+
+                        </button>
+
+
+                        <!-- PAUSAR -->
+                        <button
+                            type="button"
+                            class="experience-button secondary"
+                            id="experience-pause"
+                            disabled
+                        >
+
+                            <span aria-hidden="true">
+                                ⏸
+                            </span>
+
+                            Pausar
+
+                        </button>
+
+
+                        <!-- REINICIAR -->
+                        <button
+                            type="button"
+                            class="experience-button secondary"
+                            id="experience-reset"
+                        >
+
+                            <span aria-hidden="true">
+                                ↻
+                            </span>
+
+                            Reiniciar
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- =====================================
+                         MENSAJE DE ESTADO
+                    ====================================== -->
+
+                    <div class="experience-status-box">
+
+                        <span
+                            class="experience-status-icon"
+                            aria-hidden="true"
+                        >
+                            ✧
+                        </span>
+
+                        <p
+                            class="experience-status"
+                            id="experience-status"
+                            role="status"
+                            aria-live="polite"
+                        >
+                            Selecciona una etapa o inicia
+                            la experiencia.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =====================================
+                     PIRÁMIDE OLFATIVA DINÁMICA
+                ====================================== -->
+
+                <div
+                    class="olfactory-pyramid"
+                    id="olfactory-pyramid"
+                    aria-label="Etapas de la pirámide olfativa"
+                ></div>
+
+
+                <!-- =====================================
+                     EXPLICACIÓN DE LAS NOTAS
+                ====================================== -->
+
+                <div
+                    class="note-explanation"
+                    id="note-explanation"
+                    aria-live="polite"
+                ></div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================
+         PIE DE PÁGINA
+    ====================================== -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <p class="copyright">
+                © 2026 Essenzia. Prototipo académico.
+            </p>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

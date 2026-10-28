@@ -1,0 +1,24 @@
+# Dependencias
+node_modules/
+
+# Variables privadas y credenciales
+.env
+.env.*
+!.env.example
+
+# Archivos temporales
+*.log
+.DS_Store
+Thumbs.db
+
+# Configuración local
+.vscode/
+
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3
+
+# Archivos privados
+*.pem
+*.key
