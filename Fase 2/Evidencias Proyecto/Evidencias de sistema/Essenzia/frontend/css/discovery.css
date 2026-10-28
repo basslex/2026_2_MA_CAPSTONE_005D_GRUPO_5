@@ -1,0 +1,556 @@
+
+/* ==========================================================
+   ESSENZIA DISCOVERY BOX
+   Archivo: frontend/css/discovery.css
+========================================================== */
+
+:root {
+    --discovery-green: #173e3a;
+    --discovery-gold: #c5a879;
+    --discovery-cream: #f8f6f2;
+    --discovery-text: #171a19;
+    --discovery-muted: #77736d;
+    --discovery-border: #e7ded3;
+}
+
+.discovery-page {
+    background: var(--discovery-cream);
+    color: var(--discovery-text);
+}
+
+.discovery-page *,
+.discovery-page *::before,
+.discovery-page *::after {
+    box-sizing: border-box;
+}
+
+.discovery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.discovery-back {
+    color: var(--discovery-green);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.discovery-back:hover {
+    color: var(--discovery-gold);
+}
+
+.discovery-eyebrow {
+    display: inline-block;
+    color: var(--discovery-green);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* HERO */
+
+.discovery-hero {
+    padding: 85px 0;
+}
+
+.discovery-hero-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 65px;
+}
+
+.discovery-hero-copy h1 {
+    margin: 22px 0;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(40px, 5vw, 65px);
+    font-weight: 500;
+    line-height: 1.18;
+}
+
+.discovery-hero-copy h1 em {
+    display: block;
+    color: var(--discovery-green);
+}
+
+.discovery-hero-copy > p {
+    max-width: 520px;
+    color: var(--discovery-muted);
+    font-size: 15px;
+    line-height: 1.9;
+}
+
+.discovery-highlights {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 22px;
+    margin: 28px 0;
+}
+
+.discovery-highlights span {
+    color: var(--discovery-green);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.discovery-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 49px;
+    padding: 14px 24px;
+    background: var(--discovery-green);
+    border: 1px solid var(--discovery-green);
+    border-radius: 7px;
+    color: white;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.discovery-button:hover:not(:disabled) {
+    background: #24544e;
+    color: white;
+}
+
+.discovery-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* ILUSTRACIÓN DEL KIT */
+
+.discovery-hero-art {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 440px;
+    padding: 45px;
+    background: linear-gradient(
+        135deg,
+        #e9dfcf,
+        #f7f2e9
+    );
+    border-radius: 18px;
+}
+
+.discovery-box-illustration {
+    width: min(100%, 410px);
+    padding: 45px 25px;
+    background: #e9dcc6;
+    border: 10px solid #d3bd99;
+    border-radius: 10px;
+    box-shadow: 0 22px 40px rgba(0, 0, 0, 0.13);
+    text-align: center;
+}
+
+.discovery-box-title {
+    color: var(--discovery-green);
+    font-family: "Playfair Display", serif;
+    font-size: 32px;
+    letter-spacing: 5px;
+}
+
+.discovery-box-subtitle {
+    color: #806d50;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+}
+
+.discovery-vials {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 38px 0;
+}
+
+.discovery-vials span {
+    position: relative;
+    width: 32px;
+    height: 95px;
+    background: linear-gradient(
+        to top,
+        #c7a56e 45%,
+        #f8f2e8 46%
+    );
+    border: 2px solid #d0c0a5;
+    border-radius: 5px 5px 9px 9px;
+}
+
+.discovery-vials span::before {
+    content: "";
+    position: absolute;
+    width: 22px;
+    height: 15px;
+    top: -17px;
+    left: 3px;
+    background: var(--discovery-green);
+    border-radius: 3px 3px 0 0;
+}
+
+/* TÍTULOS */
+
+.discovery-section-heading {
+    max-width: 700px;
+    margin: 0 auto 45px;
+    text-align: center;
+}
+
+.discovery-section-heading h2 {
+    margin: 14px 0;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(30px, 4vw, 45px);
+    font-weight: 500;
+}
+
+.discovery-section-heading p {
+    color: var(--discovery-muted);
+    line-height: 1.8;
+}
+
+/* PASOS */
+
+.discovery-steps {
+    padding-top: 55px;
+    padding-bottom: 90px;
+}
+
+.discovery-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.discovery-step {
+    padding: 32px;
+    background: white;
+    border: 1px solid var(--discovery-border);
+    border-radius: 13px;
+}
+
+.discovery-step-number {
+    color: var(--discovery-gold);
+    font-family: "Playfair Display", serif;
+    font-size: 34px;
+}
+
+.discovery-step h3 {
+    margin: 15px 0;
+    font-family: "Playfair Display", serif;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.discovery-step p {
+    color: var(--discovery-muted);
+    font-size: 13px;
+    line-height: 1.9;
+}
+
+/* PERSONALIZADOR */
+
+.discovery-builder {
+    padding: 85px 0;
+    background: #fff;
+}
+
+.discovery-builder-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 330px;
+    align-items: start;
+    gap: 35px;
+}
+
+.discovery-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 24px;
+}
+
+.discovery-toolbar label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.discovery-toolbar select {
+    min-width: 195px;
+    padding: 12px;
+    border: 1px solid var(--discovery-border);
+    border-radius: 6px;
+    background: white;
+    font-family: "Inter", sans-serif;
+}
+
+.discovery-perfumes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.discovery-perfume {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--discovery-border);
+    border-radius: 11px;
+    background: white;
+}
+
+.discovery-perfume-image {
+    height: 210px;
+    padding: 20px;
+    background: #f5f2ed;
+}
+
+.discovery-perfume-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.discovery-perfume-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 20px;
+}
+
+.discovery-perfume-category {
+    color: #a78350;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.discovery-perfume-info h3 {
+    margin: 12px 0 6px;
+    font-family: "Playfair Display", serif;
+    font-size: 21px;
+    font-weight: 500;
+}
+
+.discovery-perfume-info p {
+    margin-bottom: 20px;
+    color: var(--discovery-muted);
+    font-size: 12px;
+}
+
+.discovery-select {
+    width: 100%;
+    min-height: 42px;
+    margin-top: auto;
+    padding: 10px;
+    border: 1px solid var(--discovery-green);
+    border-radius: 6px;
+    background: white;
+    color: var(--discovery-green);
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.discovery-select.selected {
+    background: var(--discovery-green);
+    color: white;
+}
+
+.discovery-select:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+/* RESUMEN */
+
+.discovery-summary {
+    position: sticky;
+    top: 25px;
+    padding: 27px;
+    background: var(--discovery-cream);
+    border: 1px solid var(--discovery-border);
+    border-radius: 13px;
+}
+
+.discovery-summary h3 {
+    margin: 12px 0;
+    font-family: "Playfair Display", serif;
+    font-size: 27px;
+    font-weight: 500;
+}
+
+#discovery-count {
+    color: var(--discovery-muted);
+    font-size: 12px;
+}
+
+.discovery-selected {
+    min-height: 110px;
+    margin: 25px 0;
+}
+
+.discovery-empty {
+    color: var(--discovery-muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.discovery-selected-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--discovery-border);
+    font-size: 12px;
+}
+
+.discovery-selected-item button {
+    border: none;
+    background: transparent;
+    color: #a94e41;
+    cursor: pointer;
+}
+
+.discovery-summary-footer {
+    padding-top: 18px;
+    border-top: 1px solid var(--discovery-border);
+}
+
+.discovery-price {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    font-size: 12px;
+}
+
+.discovery-price strong {
+    font-size: 19px;
+}
+
+.discovery-summary-footer .discovery-button {
+    width: 100%;
+}
+
+.discovery-feedback {
+    margin-top: 15px;
+    color: var(--discovery-green);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+/* CRÉDITO */
+
+.discovery-credit {
+    padding: 85px 0;
+    background: #eae1d2;
+}
+
+.discovery-credit-layout {
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    align-items: center;
+    gap: 50px;
+}
+
+.discovery-credit h2 {
+    margin: 15px 0;
+    font-family: "Playfair Display", serif;
+    font-size: clamp(30px, 4vw, 45px);
+    font-weight: 500;
+}
+
+.discovery-credit p {
+    max-width: 650px;
+    color: #625d56;
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.discovery-credit-note {
+    font-size: 12px !important;
+    font-weight: 600;
+}
+
+.discovery-credit-symbol {
+    color: var(--discovery-green);
+    font-size: 125px;
+    text-align: center;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 950px) {
+
+    .discovery-hero-layout,
+    .discovery-builder-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .discovery-summary {
+        position: static;
+    }
+
+    .discovery-hero-layout {
+        gap: 35px;
+    }
+}
+
+@media (max-width: 650px) {
+
+    .discovery-hero {
+        padding: 50px 0;
+    }
+
+    .discovery-hero-art {
+        min-height: 320px;
+        padding: 25px;
+    }
+
+    .discovery-box-illustration {
+        padding: 35px 15px;
+    }
+
+    .discovery-vials {
+        gap: 8px;
+    }
+
+    .discovery-steps-grid,
+    .discovery-perfumes,
+    .discovery-credit-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .discovery-steps {
+        padding-bottom: 55px;
+    }
+
+    .discovery-builder {
+        padding: 55px 0;
+    }
+
+    .discovery-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .discovery-toolbar select {
+        width: 100%;
+    }
+
+    .discovery-credit-symbol {
+        display: none;
+    }
+}

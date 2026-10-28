@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Descubre tu fragancia ideal con Essenzia Match. Responde cinco preguntas y encuentra perfumes personalizados."
+    >
+
+    <title>Essenzia Match | Encuentra tu fragancia</title>
+
+    <!-- FUENTES -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- CSS GENERAL -->
+    <link
+        rel="stylesheet"
+        href="../../css/style.css"
+    >
+
+    <!-- CSS ESSENZIA MATCH -->
+    <link
+        rel="stylesheet"
+        href="../../css/match.css"
+    >
+
+    <!-- JAVASCRIPT -->
+    <script
+        type="module"
+        src="../../js/match.js"
+    ></script>
+
+</head>
+
+<body>
+
+    <!-- BARRA SUPERIOR -->
+    <div class="announcement">
+        PERFUMERÍA DE AUTOR · DESCUBRE TU FRAGANCIA IDEAL
+    </div>
+
+    <!-- HEADER -->
+    <header class="header">
+
+        <div class="container header-main match-header-main">
+
+            <!-- LOGO -->
+            <a
+                class="brand brand-logo"
+                href="../../index.html"
+                aria-label="Essenzia - Volver al inicio"
+            >
+
+                <img
+                    class="logo-img"
+                    src="../../img/logo-essenzia.jpg"
+                    alt="Logo Essenzia"
+                >
+
+            </a>
+
+            <!-- VOLVER -->
+            <a
+                class="match-header-link"
+                href="../../index.html#catalogo"
+            >
+                ← Volver al catálogo
+            </a>
+
+        </div>
+
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="match-page">
+
+        <!-- PRESENTACIÓN -->
+        <section class="match-hero container">
+
+            <span class="eyebrow">
+                TU ESENCIA, TU FRAGANCIA
+            </span>
+
+            <h1>
+                Encuentra tu
+                <em>Essenzia Match.</em>
+            </h1>
+
+            <p>
+                Responde cinco preguntas y descubre
+                tres perfumes seleccionados según
+                tus gustos, preferencias y estilo de vida.
+            </p>
+
+            <div class="match-hero-points">
+
+                <span>
+                    ✦ 5 preguntas
+                </span>
+
+                <span>
+                    ✦ Recomendaciones personalizadas
+                </span>
+
+                <span>
+                    ✦ Sin registro
+                </span>
+
+            </div>
+
+        </section>
+
+        <!-- CUESTIONARIO -->
+        <section
+            class="match-shell container"
+            aria-label="Cuestionario de fragancias"
+        >
+
+            <!-- TARJETA DEL CUESTIONARIO -->
+            <div
+                class="match-card"
+                id="match-card"
+            >
+
+               
+
+                <!-- BARRA DE PROGRESO -->
+                <div
+                    class="match-progress"
+                    id="match-progress"
+                    role="progressbar"
+                    aria-label="Progreso del cuestionario"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="20"
+                >
+
+                    <div
+                        id="match-progress-fill"
+                        style="width: 20%;"
+                    ></div>
+
+                </div>
+
+                <!-- PREGUNTAS DINÁMICAS -->
+                <div
+                    id="match-app"
+                    aria-live="polite"
+                ></div>
+
+                <!-- MENSAJE DE ERROR -->
+                <p
+                    class="match-error"
+                    id="match-error"
+                    role="alert"
+                    hidden
+                >
+                    Selecciona una opción para continuar.
+                </p>
+
+                <!-- BOTONES DEL CUESTIONARIO -->
+        
+
+            </div>
+
+            <!-- RESULTADOS -->
+            <div
+                class="match-results"
+                id="match-results"
+                hidden
+                aria-live="polite"
+            >
+
+                <!-- ENCABEZADO -->
+                <div class="match-results-heading">
+
+                    <span class="eyebrow">
+                        TU SELECCIÓN PERSONALIZADA
+                    </span>
+
+                    <h2>
+                        Fragancias que conectan contigo
+                    </h2>
+
+                    <p class="match-results-intro">
+                        Descubre las tres fragancias
+                        con mayor afinidad según
+                        tus respuestas.
+                    </p>
+
+                </div>
+
+                <!-- TARJETAS DE PERFUMES -->
+                <div
+                    class="match-results-grid"
+                    id="match-results-grid"
+                ></div>
+
+                <!-- INFORMACIÓN DE AFINIDAD -->
+                <p class="match-results-disclaimer">
+                    Los porcentajes representan
+                    coincidencias calculadas a partir
+                    de tus preferencias.
+                    No son mediciones científicas
+                    ni predicciones de inteligencia artificial.
+                </p>
+
+                <!-- ACCIONES DE RESULTADOS -->
+                <div class="match-results-actions">
+
+                    <button
+                        type="button"
+                        class="match-btn match-btn-outline"
+                        id="match-restart"
+                    >
+                        <span aria-hidden="true">↻</span>
+                        Repetir cuestionario
+                    </button>
+
+                    <a
+                        class="match-btn match-btn-primary"
+                        href="../../index.html#catalogo"
+                    >
+                        Explorar todo el catálogo
+                        <span aria-hidden="true">→</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="container">
+
+            <p class="copyright">
+                © 2026 Essenzia. Prototipo académico.
+            </p>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

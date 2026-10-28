@@ -1,0 +1,956 @@
+
+/* ==========================================================
+   ESSENZIA MATCH
+   Archivo: frontend/css/match.css
+
+   Diseño exclusivo del cuestionario y recomendaciones
+   Compatible con frontend/js/match.js
+========================================================== */
+
+
+/* ==========================================================
+   1. VARIABLES
+========================================================== */
+
+:root {
+    --match-bg: #f8f6f2;
+    --match-white: #ffffff;
+    --match-green: #173e3a;
+    --match-green-hover: #24544e;
+    --match-gold: #c5a879;
+    --match-gold-light: #f1e8d9;
+    --match-text: #171a19;
+    --match-muted: #77736d;
+    --match-border: #e7ded3;
+    --match-shadow: 0 18px 45px rgba(28, 35, 31, 0.07);
+
+    --match-font-title: "Playfair Display", Georgia, serif;
+    --match-font-body: "Inter", Arial, sans-serif;
+}
+
+
+/* ==========================================================
+   2. CONFIGURACIÓN GENERAL
+========================================================== */
+
+.match-page,
+.match-page * {
+    box-sizing: border-box;
+}
+
+.match-page {
+    background: var(--match-bg);
+    color: var(--match-text);
+    font-family: var(--match-font-body);
+    min-height: 75vh;
+    padding: 0 0 100px;
+}
+
+.match-page button,
+.match-page a {
+    font-family: var(--match-font-body);
+}
+
+.match-page button {
+    cursor: pointer;
+}
+
+.match-page [hidden] {
+    display: none !important;
+}
+
+
+/* ==========================================================
+   3. HEADER
+========================================================== */
+
+.match-header-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.match-header-link {
+    color: var(--match-gold);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.match-header-link:hover {
+    color: #f1d7a7;
+}
+
+
+/* ==========================================================
+   4. HERO
+========================================================== */
+
+.match-hero {
+    text-align: center;
+    padding-top: 75px;
+    padding-bottom: 48px;
+}
+
+.match-hero .eyebrow {
+    display: inline-block;
+    color: var(--match-green);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.match-hero h1 {
+    font-family: var(--match-font-title);
+    font-size: clamp(34px, 4vw, 58px);
+    line-height: 1.2;
+    font-weight: 500;
+    margin: 0 auto 22px;
+    max-width: 900px;
+}
+
+.match-hero h1 em {
+    color: var(--match-green);
+    font-weight: 400;
+}
+
+.match-hero > p {
+    color: var(--match-muted);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.9;
+    font-size: 14px;
+}
+
+.match-hero-points {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.match-hero-points span {
+    color: var(--match-green);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+/* ==========================================================
+   5. CONTENEDOR PRINCIPAL
+========================================================== */
+
+.match-shell {
+    width: 100%;
+    padding-top: 12px;
+}
+
+.match-card {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 48px;
+
+    background: var(--match-white);
+    border: 1px solid var(--match-border);
+    border-radius: 20px;
+
+    box-shadow: var(--match-shadow);
+
+    transition:
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.match-card:hover {
+    box-shadow: 0 22px 55px rgba(28, 35, 31, 0.09);
+}
+
+#match-app {
+    width: 100%;
+}
+
+
+/* ==========================================================
+   6. INDICADOR DE PROGRESO
+========================================================== */
+
+.match-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.match-step {
+    color: var(--match-green);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.match-percentage {
+    color: var(--match-green);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.match-progress {
+    width: 100%;
+    height: 9px;
+
+    background: #ebe7e1;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.match-progress-fill {
+    height: 100%;
+    min-height: 9px;
+
+    background: linear-gradient(
+        90deg,
+        var(--match-green),
+        var(--match-gold)
+    );
+
+    border-radius: 30px;
+
+    transition: width 0.45s ease;
+}
+
+
+/* ==========================================================
+   7. ENCABEZADO DE PREGUNTA
+========================================================== */
+
+.match-question-heading {
+    margin-top: 45px;
+    margin-bottom: 30px;
+}
+
+.match-question-heading h2 {
+    font-family: var(--match-font-title);
+    font-size: clamp(27px, 3vw, 37px);
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.5px;
+
+    margin: 0 0 15px;
+    color: var(--match-text);
+}
+
+.match-question-heading p {
+    color: var(--match-muted);
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 0;
+}
+
+
+/* ==========================================================
+   8. OPCIONES DEL CUESTIONARIO
+========================================================== */
+
+.match-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.match-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    width: 100%;
+    min-height: 90px;
+    padding: 18px 20px;
+
+    background: #fcfbf9;
+    border: 1px solid var(--match-border);
+    border-radius: 12px;
+
+    color: var(--match-text);
+    text-align: left;
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.match-option:hover {
+    border-color: var(--match-gold);
+    background: #fffdf9;
+    transform: translateY(-2px);
+
+    box-shadow: 0 8px 20px rgba(28, 35, 31, 0.05);
+}
+
+.match-option.selected,
+.match-option[aria-pressed="true"] {
+    background: #eaf2ee;
+    border: 2px solid var(--match-green);
+    padding: 17px 19px;
+
+    box-shadow: 0 4px 14px rgba(23, 62, 58, 0.08);
+}
+
+.match-option-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+
+    background: var(--match-gold-light);
+    color: var(--match-green);
+
+    border-radius: 11px;
+    font-size: 22px;
+    line-height: 1;
+}
+
+.match-option strong {
+    color: var(--match-text);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.4;
+    flex-shrink: 0;
+}
+
+.match-option small {
+    color: #56524d;
+    font-size: 11px;
+    line-height: 1.65;
+    font-weight: 400;
+}
+
+.match-option.selected strong {
+    color: var(--match-green);
+}
+
+
+/* ==========================================================
+   9. BOTONES DEL CUESTIONARIO
+========================================================== */
+
+.match-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+
+    margin-top: 36px;
+    padding-top: 30px;
+
+    border-top: 1px solid var(--match-border);
+}
+
+.match-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    min-width: 155px;
+    min-height: 48px;
+    padding: 13px 22px;
+
+    border-radius: 8px;
+    border: 1px solid transparent;
+
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+
+    text-decoration: none;
+    text-align: center;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.match-btn-primary {
+    background: var(--match-green);
+    color: #ffffff;
+    border-color: var(--match-green);
+}
+
+.match-btn-primary:hover:not(:disabled) {
+    background: var(--match-green-hover);
+    border-color: var(--match-green-hover);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.match-btn-outline {
+    background: #ffffff;
+    color: var(--match-green);
+    border-color: var(--match-border);
+}
+
+.match-btn-outline:hover:not(:disabled) {
+    background: #f6f1e9;
+    border-color: var(--match-gold);
+    color: var(--match-green);
+}
+
+.match-btn:disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.match-btn:focus-visible,
+.match-option:focus-visible,
+.match-result-button:focus-visible {
+    outline: 3px solid var(--match-gold);
+    outline-offset: 3px;
+}
+
+
+/* ==========================================================
+   10. MENSAJE DE ERROR
+========================================================== */
+
+.match-error {
+    margin-top: 20px;
+    padding: 12px 16px;
+
+    color: #963f35;
+    background: #fff1ee;
+    border: 1px solid #e7b5ae;
+    border-radius: 8px;
+
+    font-size: 12px;
+}
+
+
+/* ==========================================================
+   11. SECCIÓN DE RESULTADOS
+========================================================== */
+
+.match-results {
+    width: 100%;
+    padding: 10px 0 30px;
+}
+
+.match-results-heading {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.match-results-heading .eyebrow {
+    display: inline-block;
+
+    color: var(--match-green);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+
+    margin-bottom: 20px;
+}
+
+.match-results-heading h2 {
+    font-family: var(--match-font-title);
+    font-size: clamp(30px, 3.5vw, 46px);
+    font-weight: 500;
+    line-height: 1.25;
+
+    color: var(--match-text);
+    margin: 0 0 16px;
+}
+
+.match-results-heading p {
+    max-width: 600px;
+    margin: 0 auto;
+
+    color: var(--match-muted);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+
+/* ==========================================================
+   12. GRILLA DE RESULTADOS
+========================================================== */
+
+.match-results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+
+    width: 100%;
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+
+/* ==========================================================
+   13. TARJETAS DE PERFUMES
+========================================================== */
+
+.match-result-card {
+    display: flex;
+    flex-direction: column;
+
+    background: var(--match-white);
+    border: 1px solid var(--match-border);
+    border-radius: 13px;
+
+    overflow: hidden;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.match-result-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--match-shadow);
+}
+
+.match-result-image {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 245px;
+
+    padding: 18px;
+    background: #f0ece6;
+
+    overflow: hidden;
+}
+
+.match-result-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+
+    transition: transform 0.35s ease;
+}
+
+.match-result-card:hover .match-result-image img {
+    transform: scale(1.04);
+}
+
+.match-result-position {
+    position: absolute;
+    z-index: 2;
+
+    top: 14px;
+    left: 14px;
+
+    padding: 9px 11px;
+
+    background: var(--match-green);
+    color: #ffffff;
+
+    border-radius: 4px;
+
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+}
+
+
+/* ==========================================================
+   14. INFORMACIÓN DE PERFUMES
+========================================================== */
+
+.match-result-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    padding: 23px;
+}
+
+.match-result-category {
+    color: #a78350;
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+
+    margin-bottom: 12px;
+}
+
+.match-result-brand {
+    color: var(--match-green);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    margin: 0 0 10px;
+}
+
+.match-result-info h3 {
+    font-family: var(--match-font-title);
+
+    color: var(--match-text);
+    font-size: 23px;
+    font-weight: 500;
+    line-height: 1.3;
+
+    min-height: 60px;
+    margin: 0 0 25px;
+}
+
+
+/* ==========================================================
+   15. PORCENTAJE DE COMPATIBILIDAD
+========================================================== */
+
+.match-score {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+
+    margin-bottom: 12px;
+}
+
+.match-score strong {
+    font-size: 27px;
+    font-weight: 700;
+    color: var(--match-green);
+}
+
+.match-score span {
+    font-size: 11px;
+    color: var(--match-muted);
+}
+
+.match-score-bar {
+    width: 100%;
+    height: 7px;
+
+    background: #ebe7e1;
+    border-radius: 30px;
+
+    overflow: hidden;
+
+    margin-bottom: 20px;
+}
+
+.match-score-bar > div {
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        var(--match-green),
+        var(--match-gold)
+    );
+
+    border-radius: 30px;
+    transition: width 0.5s ease;
+}
+
+
+/* ==========================================================
+   16. JUSTIFICACIÓN Y PRECIO
+========================================================== */
+
+.match-result-reason {
+    color: #6c675f;
+    font-size: 12px;
+    line-height: 1.9;
+
+    margin: 0 0 24px;
+}
+
+.match-result-price {
+    margin: auto 0 18px;
+
+    color: var(--match-text);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.match-result-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    min-height: 46px;
+    padding: 13px 18px;
+
+    background: var(--match-green);
+    color: #ffffff;
+
+    border: 1px solid var(--match-green);
+    border-radius: 7px;
+
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.match-result-button:hover {
+    background: var(--match-green-hover);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+
+/* ==========================================================
+   17. ACLARACIÓN DE RESULTADOS
+========================================================== */
+
+.match-disclaimer,
+.match-results-disclaimer {
+    max-width: 700px;
+
+    margin: 35px auto 0;
+
+    color: var(--match-muted);
+    text-align: center;
+
+    font-size: 11px;
+    line-height: 1.9;
+}
+
+
+/* ==========================================================
+   18. BOTONES FINALES
+========================================================== */
+
+.match-results-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+
+    margin-top: 28px;
+}
+
+.match-results-actions .match-btn {
+    min-width: 195px;
+}
+
+
+/* ==========================================================
+   19. COMPATIBILIDAD CON CLASES ANTERIORES
+========================================================== */
+
+/* Estilo para botones generados por versiones anteriores */
+
+.match-back,
+.match-next,
+.match-restart,
+.match-catalog-link {
+    font-family: var(--match-font-body);
+}
+
+/* Mantener opciones visualmente consistentes */
+
+.match-option.selected .match-option-icon {
+    background: #dce8df;
+}
+
+/* Evitar que imágenes excedan sus tarjetas */
+
+.match-result-card img {
+    max-width: 100%;
+}
+
+
+/* ==========================================================
+   20. TABLETS
+========================================================== */
+
+@media (max-width: 1024px) {
+
+    .match-hero {
+        padding-top: 60px;
+    }
+
+    .match-card {
+        padding: 38px;
+    }
+
+    .match-results-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 780px;
+    }
+
+}
+
+
+/* ==========================================================
+   21. MÓVILES
+========================================================== */
+
+@media (max-width: 700px) {
+
+    .match-page {
+        padding-bottom: 65px;
+    }
+
+    .match-hero {
+        padding-top: 45px;
+        padding-bottom: 30px;
+    }
+
+    .match-hero h1 {
+        font-size: 36px;
+    }
+
+    .match-hero > p {
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+    .match-hero-points {
+        gap: 12px 18px;
+    }
+
+    .match-hero-points span {
+        font-size: 10px;
+    }
+
+    .match-card {
+        padding: 26px 20px;
+        border-radius: 14px;
+    }
+
+    .match-question-heading {
+        margin-top: 32px;
+        margin-bottom: 23px;
+    }
+
+    .match-question-heading h2 {
+        font-size: 29px;
+    }
+
+    .match-options {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .match-option {
+        min-height: 78px;
+        padding: 15px;
+    }
+
+    .match-option.selected,
+    .match-option[aria-pressed="true"] {
+        padding: 14px;
+    }
+
+    .match-actions {
+        gap: 12px;
+        margin-top: 28px;
+        padding-top: 24px;
+    }
+
+    .match-actions .match-btn {
+        flex: 1;
+        min-width: 0;
+        padding: 13px 10px;
+        font-size: 11px;
+    }
+
+    .match-results-grid {
+        grid-template-columns: 1fr;
+        max-width: 430px;
+    }
+
+    .match-results-heading h2 {
+        font-size: 32px;
+    }
+
+    .match-result-image {
+        height: 270px;
+    }
+
+    .match-result-info h3 {
+        min-height: 0;
+    }
+
+    .match-results-actions {
+        flex-direction: column;
+    }
+
+    .match-results-actions .match-btn {
+        width: 100%;
+        max-width: 430px;
+    }
+
+    .match-header-link {
+        font-size: 11px;
+    }
+
+}
+
+
+/* ==========================================================
+   22. PANTALLAS PEQUEÑAS
+========================================================== */
+
+@media (max-width: 400px) {
+
+    .match-hero h1 {
+        font-size: 30px;
+    }
+
+    .match-card {
+        padding: 22px 15px;
+    }
+
+    .match-option {
+        gap: 10px;
+    }
+
+    .match-option-icon {
+        width: 37px;
+        height: 37px;
+        min-width: 37px;
+        font-size: 19px;
+    }
+
+    .match-option strong {
+        font-size: 12px;
+    }
+
+    .match-option small {
+        font-size: 10px;
+    }
+
+    .match-actions .match-btn {
+        font-size: 10px;
+    }
+
+}
+
+
+/* ==========================================================
+   FIN - ESSENZIA MATCH
+========================================================== */

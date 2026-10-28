@@ -1,0 +1,759 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Essenzia, perfumería de autor. Descubre fragancias de diseñador, árabes y de nicho."
+    >
+
+    <title>Essenzia | Perfumería de autor</title>
+
+    <!-- HOJA DE ESTILOS -->
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- JAVASCRIPT PRINCIPAL -->
+    <script type="module" src="./js/main.js"></script>
+</head>
+
+<body>
+
+    <!-- ==========================================
+         BARRA DE ANUNCIOS
+    ========================================== -->
+
+    <div class="announcement">
+        PERFUMERÍA DE AUTOR · DESCUBRE TU FRAGANCIA IDEAL
+    </div>
+
+    <!-- ==========================================
+         ENCABEZADO
+    ========================================== -->
+
+    <header class="header">
+
+        <div class="container header-main">
+
+            <!-- MENÚ MÓVIL -->
+            <button
+                type="button"
+                class="menu-toggle"
+                id="menu-toggle"
+                aria-label="Abrir menú"
+                aria-expanded="false"
+                aria-controls="nav"
+            >
+                ☰
+            </button>
+
+        
+           
+
+
+
+
+<!-- LOGO ESSENZIA -->
+<a class="brand brand-logo" href="./index.html" aria-label="Essenzia - Inicio">
+    <img
+        src="./img/logo-essenzia.jpg"
+        alt="Essenzia"
+        class="logo-img"
+    >
+</a>
+
+
+
+
+
+
+            <!-- BUSCADOR -->
+            <label class="search">
+
+                <span class="sr-only">
+                    Buscar perfumes
+                </span>
+
+                <input
+                    id="search"
+                    type="search"
+                    placeholder="Buscar fragancias..."
+                    autocomplete="off"
+                >
+
+            </label>
+
+            <!-- CARRITO -->
+            <button
+                type="button"
+                class="bag"
+                id="cart-button"
+                aria-label="Ver carrito"
+            >
+                Bolsa
+                <span id="cart-count">0</span>
+            </button>
+
+        </div>
+
+        <!-- NAVEGACIÓN -->
+        <nav class="nav" id="nav" aria-label="Navegación principal">
+
+            <div class="container nav-inner">
+
+                <a href="#inicio">
+                    Inicio
+                </a>
+
+                <a href="#catalogo">
+                    Perfumes
+                </a>
+
+                <a
+                    href="#catalogo"
+                    data-category="mujer"
+                >
+                    Mujer
+                </a>
+
+                <a
+                    href="#catalogo"
+                    data-category="hombre"
+                >
+                    Hombre
+                </a>
+
+                <a
+                    href="#catalogo"
+                    data-category="unisex"
+                >
+                    Unisex
+                </a>
+
+                <a href="./pages/discovery/discovery.html">
+                    Discovery Box
+                </a>
+
+                <a href="./pages/match/match.html">
+                    Essenzia Match
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+    <!-- ==========================================
+         CONTENIDO PRINCIPAL
+    ========================================== -->
+
+    <main id="inicio">
+
+        <!-- ======================================
+             HERO PRINCIPAL
+        ====================================== -->
+
+        <section class="hero">
+
+            <div class="container hero-layout">
+
+                <div class="hero-copy">
+
+                    <span class="eyebrow">
+                        UNA EXPERIENCIA OLFATIVA
+                    </span>
+
+                    <h1>
+                        El aroma que<br>
+                        <em>te define.</em>
+                    </h1>
+
+                    <p>
+                        Una colección seleccionada para
+                        descubrir tu próxima fragancia favorita,
+                        sin comprar a ciegas.
+                    </p>
+
+                    <a
+                        class="button"
+                        href="#catalogo"
+                    >
+                        Explorar perfumes →
+                    </a>
+
+                </div>
+
+                <!-- ILUSTRACIÓN PRINCIPAL -->
+                <div class="hero-visual">
+
+                    <div class="bottle">
+
+                        <div class="cap"></div>
+
+                        <div class="neck"></div>
+
+                        <div class="glass">
+
+                            <span>ESSENZIA</span>
+
+                            <small>
+                                EAU DE PARFUM
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <span class="hero-caption">
+                        EL ARTE DE SENTIR
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================
+             BENEFICIOS
+        ====================================== -->
+
+        <section
+            class="container benefits"
+            aria-label="Beneficios de Essenzia"
+        >
+
+            <span>
+                ✦ Fragancias seleccionadas
+            </span>
+
+            <span>
+                ✦ Descubre antes de elegir
+            </span>
+
+            <span>
+                ✦ Compra con confianza
+            </span>
+
+        </section>
+
+        <!-- ======================================
+             COMPRAR POR CATEGORÍA
+        ====================================== -->
+
+        <section
+            class="section container"
+            id="categorias"
+        >
+
+            <div class="section-head">
+
+                <span class="eyebrow">
+                    EXPLORA ESSENZIA
+                </span>
+
+                <h2>
+                    Compra por categoría
+                </h2>
+
+                <p>
+                    Encuentra una fragancia para cada estilo.
+                </p>
+
+            </div>
+
+            <div class="categories">
+
+                <!-- MUJER -->
+                <a
+                    class="category"
+                    href="#catalogo"
+                    data-category="mujer"
+                >
+
+                    <span class="category-art blush">
+                        ✿
+                    </span>
+
+                    <strong>
+                        Mujer
+                    </strong>
+
+                    <small>
+                        Explorar →
+                    </small>
+
+                </a>
+
+                <!-- HOMBRE -->
+                <a
+                    class="category"
+                    href="#catalogo"
+                    data-category="hombre"
+                >
+
+                    <span class="category-art forest">
+                        ◆
+                    </span>
+
+                    <strong>
+                        Hombre
+                    </strong>
+
+                    <small>
+                        Explorar →
+                    </small>
+
+                </a>
+
+                <!-- UNISEX -->
+                <a
+                    class="category"
+                    href="#catalogo"
+                    data-category="unisex"
+                >
+
+                    <span class="category-art sand">
+                        ✧
+                    </span>
+
+                    <strong>
+                        Unisex
+                    </strong>
+
+                    <small>
+                        Explorar →
+                    </small>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================
+             CATÁLOGO DE PERFUMES
+        ====================================== -->
+
+        <section
+            class="section catalog-section"
+            id="catalogo"
+        >
+
+            <div class="container">
+
+                <div class="section-head">
+
+                    <span class="eyebrow">
+                        NUESTRA SELECCIÓN
+                    </span>
+
+                    <h2>
+                        Descubre nuestra colección
+                    </h2>
+
+                    <p>
+                        Explora nuestros 30 perfumes de
+                        diseñador, árabes y de nicho.
+                    </p>
+
+                </div>
+
+                <!-- FILTROS -->
+                <div class="filters">
+
+                    <!-- TIPO DE PERFUME -->
+                    <label for="category">
+
+                        Tipo de perfume
+
+                        <select id="category">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option value="disenador">
+                                Diseñador
+                            </option>
+
+                            <option value="arabe">
+                                Árabe
+                            </option>
+
+                            <option value="nicho">
+                                Nicho
+                            </option>
+
+                        </select>
+
+                    </label>
+
+                    <!-- GÉNERO -->
+                    <label for="gender">
+
+                        Género
+
+                        <select id="gender">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option value="mujer">
+                                Mujer
+                            </option>
+
+                            <option value="hombre">
+                                Hombre
+                            </option>
+
+                            <option value="unisex">
+                                Unisex
+                            </option>
+
+                        </select>
+
+                    </label>
+
+                    <!-- FAMILIA OLFATIVA -->
+                    <label for="family">
+
+                        Familia olfativa
+
+                        <select id="family">
+
+                            <option value="">
+                                Todas
+                            </option>
+
+                            <option value="floral">
+                                Floral
+                            </option>
+
+                            <option value="amaderada">
+                                Amaderada
+                            </option>
+
+                            <option value="aromatica">
+                                Aromática
+                            </option>
+
+                            <option value="citrica">
+                                Cítrica
+                            </option>
+
+                            <option value="gourmand">
+                                Gourmand
+                            </option>
+
+                            <option value="acuatica">
+                                Acuática
+                            </option>
+
+                        </select>
+
+                    </label>
+
+                    <!-- OCASIÓN -->
+                    <label for="occasion">
+
+                        Ocasión
+
+                        <select id="occasion">
+
+                            <option value="">
+                                Todas
+                            </option>
+
+                            <option value="diario">
+                                Diario
+                            </option>
+
+                            <option value="formal">
+                                Formal
+                            </option>
+
+                            <option value="noche">
+                                Noche
+                            </option>
+
+                        </select>
+
+                    </label>
+
+                    <!-- CLIMA -->
+                    <label for="climate">
+
+                        Clima
+
+                        <select id="climate">
+
+                            <option value="">
+                                Todos
+                            </option>
+
+                            <option value="calido">
+                                Cálido
+                            </option>
+
+                            <option value="templado">
+                                Templado
+                            </option>
+
+                            <option value="frio">
+                                Frío
+                            </option>
+
+                        </select>
+
+                    </label>
+
+                </div>
+
+                <!-- CONTADOR DE RESULTADOS -->
+                <p
+                    class="count"
+                    id="result-count"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Cargando perfumes...
+                </p>
+
+                <!-- PRODUCTOS GENERADOS POR JS -->
+                <div
+                    class="product-grid"
+                    id="product-grid"
+                ></div>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================
+             DISCOVERY BOX
+        ====================================== -->
+
+        <section
+            class="discovery section"
+            id="discovery"
+        >
+
+            <div class="container discovery-layout">
+
+                <!-- ILUSTRACIÓN -->
+                <div class="discovery-art">
+
+                    <div class="kit">
+
+                        <span>
+                            ESSENZIA
+                        </span>
+
+                        <div class="vials">
+
+                            <i></i>
+                            <i></i>
+                            <i></i>
+                            <i></i>
+
+                        </div>
+
+                        <small>
+                            DISCOVERY BOX
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <!-- INFORMACIÓN -->
+                <div>
+
+                    <span class="eyebrow">
+                        PRUEBA ANTES DE ELEGIR
+                    </span>
+
+                    <h2>
+                        Descubre. Siente.<br>
+                        Decide.
+                    </h2>
+
+                    <p>
+                        Conoce distintas fragancias a través
+                        de una selección de muestras.
+
+                        Próximamente podrás transformar
+                        tu experiencia en crédito para
+                        una compra.
+                    </p>
+
+                    <a
+                        class="button secondary"
+                        href="./pages/discovery/discovery.html"
+                    >
+                        Personalizar mi Discovery Box →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ======================================
+             ESSENZIA MATCH
+        ====================================== -->
+
+        <section
+            class="match section"
+            id="match"
+        >
+
+            <div class="container match-content">
+
+                <span class="eyebrow">
+                    ENCUENTRA TU FRAGANCIA IDEAL
+                </span>
+
+                <h2>
+                    ¿No sabes qué perfume elegir?
+                </h2>
+
+                <p>
+                    Essenzia Match te ayudará a descubrir
+                    las fragancias más compatibles con tu
+                    personalidad, clima y preferencias.
+                </p>
+
+                <a class="button" href="./pages/match/match.html">
+                    Descubrir mi Essenzia Match →
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         PIE DE PÁGINA
+    ========================================== -->
+
+    <footer class="footer">
+
+        <div class="container footer-grid">
+
+            <!-- MARCA -->
+            <div>
+
+                <a
+                    class="brand"
+                    href="#inicio"
+                >
+                    Essenzia<span>.</span>
+                </a>
+
+                <p>
+                    El arte de encontrar tu esencia.
+                </p>
+
+            </div>
+
+            <!-- ENLACES -->
+            <div>
+
+                <strong>
+                    Explorar
+                </strong>
+
+                <a href="#catalogo">
+                    Perfumes
+                </a>
+
+                <a href="./pages/discovery/discovery.html">
+                    Discovery Box
+                </a>
+
+                <a href="./pages/match/match.html">
+                    Essenzia Match
+                </a>
+
+            </div>
+
+            <!-- INFORMACIÓN -->
+            <div>
+
+                <strong>
+                    Información
+                </strong>
+
+                <p>
+                    Contacto y políticas:
+                    próximamente.
+                </p>
+
+                <p>
+                    Chile · Precios referenciales en CLP
+                </p>
+
+            </div>
+
+        </div>
+
+        <p class="copyright">
+            © 2026 Essenzia. Prototipo académico.
+        </p>
+
+    </footer>
+
+    <!-- ==========================================
+         VENTANA DEL CARRITO
+    ========================================== -->
+
+    <dialog
+        id="cart-dialog"
+        aria-labelledby="cart-title"
+    >
+
+        <div class="dialog-top">
+
+            <h2 id="cart-title">
+                Tu carrito
+            </h2>
+
+            <button
+                type="button"
+                id="close-cart"
+                aria-label="Cerrar carrito"
+            >
+                ✕
+            </button>
+
+        </div>
+
+        <!-- PRODUCTOS DEL CARRITO -->
+        <div id="cart-items"></div>
+
+        <!-- TOTAL -->
+        <p id="cart-total"></p>
+
+        <p class="hint">
+            Checkout y pagos reales se
+            implementarán posteriormente.
+        </p>
+
+    </dialog>
+
+</body>
+
+</html>
