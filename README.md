@@ -8,6 +8,8 @@ Asignatura / Sección: 2026_2_MA_CAPSTONE_005D
 
 Grupo: GRUPO_5
 
+Integrantes: Alexander Andrades, Manuel Pinto
+
 Institución: DUOC UC  
 
 ---
