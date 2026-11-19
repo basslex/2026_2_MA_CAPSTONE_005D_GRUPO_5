@@ -1,0 +1,326 @@
+
+/* ==============================================
+   ESSENZIA - MI CUENTA
+   Archivo: frontend/css/cuenta.css
+============================================== */
+
+@import url(
+    "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap"
+);
+
+:root {
+    --negro: #0f0f0f;
+    --dorado: #d4af37;
+    --fondo: #faf9f7;
+    --blanco: #ffffff;
+    --borde: #e9e4dc;
+    --gris: #777777;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--fondo);
+    color: var(--negro);
+    font-family: "Inter", sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+button,
+a {
+    font-family: inherit;
+}
+
+.cuenta-header {
+    background: var(--negro);
+    padding: 18px 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.cuenta-logo {
+    width: 170px;
+    height: auto;
+    display: block;
+}
+
+.volver-tienda {
+    color: var(--dorado);
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.volver-tienda:hover {
+    color: #ffffff;
+}
+
+.cuenta-main {
+    flex: 1;
+    padding: 60px 20px;
+}
+
+.cuenta-container {
+    max-width: 1150px;
+    margin: auto;
+}
+
+.cuenta-heading {
+    margin-bottom: 35px;
+}
+
+.eyebrow {
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #a17d24;
+    font-weight: 700;
+}
+
+.cuenta-heading h1 {
+    font-family: "Playfair Display", serif;
+    font-size: clamp(34px, 5vw, 46px);
+    font-weight: 500;
+    margin: 12px 0;
+}
+
+.cuenta-heading p {
+    font-size: 13px;
+    color: var(--gris);
+    line-height: 1.7;
+}
+
+.cuenta-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 25px;
+    align-items: start;
+}
+
+.cuenta-sidebar,
+.cuenta-contenido {
+    background: var(--blanco);
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+}
+
+.cuenta-sidebar {
+    padding: 25px;
+}
+
+.cuenta-usuario {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--borde);
+}
+
+.usuario-avatar {
+    width: 48px;
+    height: 48px;
+    background: #f4eddd;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: "Playfair Display", serif;
+    font-size: 24px;
+    color: #9d7822;
+    flex-shrink: 0;
+}
+
+.cuenta-usuario strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.cuenta-usuario small {
+    display: block;
+    font-size: 10px;
+    color: var(--gris);
+    overflow-wrap: anywhere;
+}
+
+.cuenta-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 25px 0;
+}
+
+.menu-item {
+    border: 0;
+    background: transparent;
+    text-align: left;
+    padding: 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #555555;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.menu-item:hover {
+    background: #f8f6f2;
+}
+
+.menu-item.active {
+    background: #f5f0e5;
+    color: #80601d;
+    font-weight: 700;
+}
+
+.cuenta-acceso {
+    display: block;
+    padding: 13px;
+    text-align: center;
+    background: var(--negro);
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.cuenta-acceso:hover {
+    background: #333333;
+}
+
+.cuenta-contenido {
+    padding: 35px;
+    min-height: 430px;
+}
+
+.cuenta-panel[hidden] {
+    display: none;
+}
+
+.cuenta-panel h2 {
+    font-family: "Playfair Display", serif;
+    font-size: 29px;
+    font-weight: 500;
+    margin: 0 0 14px;
+}
+
+.cuenta-panel > p {
+    color: var(--gris);
+    font-size: 13px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+.resumen-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.resumen-card {
+    background: #faf9f7;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.resumen-card span {
+    font-size: 25px;
+    color: #a17d24;
+}
+
+.resumen-card strong {
+    font-size: 30px;
+}
+
+.resumen-card small {
+    color: var(--gris);
+    font-size: 12px;
+}
+
+.cuenta-button {
+    display: inline-block;
+    background: var(--negro);
+    color: #ffffff;
+    padding: 14px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.cuenta-button:hover {
+    background: #333333;
+}
+
+.cuenta-vacio {
+    text-align: center;
+    border: 1px dashed var(--borde);
+    border-radius: 10px;
+    padding: 50px 25px;
+    background: #faf9f7;
+}
+
+.cuenta-vacio > span {
+    font-size: 34px;
+    color: #a17d24;
+}
+
+.cuenta-vacio h3 {
+    font-family: "Playfair Display", serif;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.cuenta-vacio p {
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--gris);
+}
+
+.cuenta-footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--gris);
+    font-size: 11px;
+}
+
+@media (max-width: 800px) {
+    .cuenta-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .cuenta-header {
+        padding: 16px;
+    }
+
+    .cuenta-logo {
+        width: 130px;
+    }
+
+    .cuenta-main {
+        padding: 35px 14px;
+    }
+
+    .cuenta-sidebar {
+        padding: 20px;
+    }
+
+    .cuenta-contenido {
+        padding: 25px 20px;
+    }
+
+    .resumen-grid {
+        grid-template-columns: 1fr;
+    }
+}

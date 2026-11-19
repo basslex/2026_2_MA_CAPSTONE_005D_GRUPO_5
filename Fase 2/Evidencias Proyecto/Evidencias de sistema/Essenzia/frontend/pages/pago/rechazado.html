@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Resultado del pago | Essenzia</title>
+
+    <link
+        rel="stylesheet"
+        href="../../css/pago.css"
+    >
+
+    <script
+        type="module"
+        src="../../js/pago.js"
+    ></script>
+</head>
+
+<body>
+
+    <header class="pago-header">
+        <a href="../../index.html">
+            <img
+                class="pago-logo"
+                src="../../img/logo-essenzia.jpg"
+                alt="Essenzia"
+            >
+        </a>
+    </header>
+
+    <main class="pago-main">
+
+        <section class="pago-card">
+
+            <div
+                id="pago-icono"
+                class="pago-icono pendiente"
+                aria-hidden="true"
+            >
+                ⌛
+            </div>
+
+            <span class="pago-eyebrow">
+                ESSENZIA · RESULTADO DEL PAGO
+            </span>
+
+            <h1 id="pago-titulo">
+                Consultando el resultado
+            </h1>
+
+            <p
+                id="pago-descripcion"
+                class="pago-descripcion"
+            >
+                Estamos verificando el estado
+                real de tu operación.
+            </p>
+
+            <div
+                id="pago-detalles"
+                class="pago-detalles"
+                hidden
+            >
+                <div class="pago-fila">
+                    <span>Orden</span>
+                    <strong id="pago-orden">—</strong>
+                </div>
+
+                <div class="pago-fila">
+                    <span>Referencia</span>
+                    <strong id="pago-referencia">—</strong>
+                </div>
+
+                <div class="pago-fila">
+                    <span>Total</span>
+                    <strong id="pago-total">—</strong>
+                </div>
+
+                <div class="pago-fila">
+                    <span>Estado Mercado Pago</span>
+                    <strong id="pago-estado-real">—</strong>
+                </div>
+            </div>
+
+            <p
+                id="pago-estado"
+                class="pago-estado"
+                role="status"
+                aria-live="polite"
+            >
+                Consultando...
+            </p>
+
+            <div class="pago-acciones">
+
+                <button
+                    type="button"
+                    id="consultar-pago"
+                    class="pago-boton"
+                >
+                    Consultar nuevamente
+                </button>
+
+                <a
+                    href="../../index.html"
+                    class="pago-boton secundario"
+                >
+                    Volver a Essenzia
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="pago-footer">
+        © 2026 Essenzia · Prototipo académico
+    </footer>
+
+</body>
+</html>

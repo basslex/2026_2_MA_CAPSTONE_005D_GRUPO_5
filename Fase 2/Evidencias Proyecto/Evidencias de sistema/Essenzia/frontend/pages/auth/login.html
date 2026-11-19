@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Inicia sesión en Essenzia y descubre tus fragancias favoritas."
+    >
+
+    <title>Iniciar sesión | Essenzia</title>
+
+    <link
+        rel="stylesheet"
+        href="../../css/auth.css"
+    >
+
+    <script
+        type="module"
+        src="../../js/auth.js"
+    ></script>
+</head>
+
+<body>
+
+    <header class="auth-header">
+        <a href="../../index.html" aria-label="Volver a Essenzia">
+            <img
+                src="../../img/logo-essenzia.jpg"
+                alt="Essenzia"
+                class="auth-logo"
+            >
+        </a>
+    </header>
+
+    <main class="auth-main">
+
+        <section class="auth-card">
+
+            <span class="auth-eyebrow">
+                TU UNIVERSO OLFATIVO
+            </span>
+
+            <h1>Bienvenido de nuevo</h1>
+
+            <p class="auth-description">
+                Inicia sesión para acceder a tus
+                fragancias favoritas y tu lista de deseos.
+            </p>
+
+            <form id="login-form" class="auth-form">
+
+                <label for="login-email">
+                    Correo electrónico
+                </label>
+
+                <input
+                    type="email"
+                    id="login-email"
+                    name="email"
+                    placeholder="correo@ejemplo.com"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="login-password">
+                    Contraseña
+                </label>
+
+                <input
+                    type="password"
+                    id="login-password"
+                    name="password"
+                    placeholder="Ingresa tu contraseña"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <p
+                    id="auth-message"
+                    class="auth-message"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+                <button
+                    type="submit"
+                    class="auth-button"
+                >
+                    Iniciar sesión
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                ¿Todavía no tienes una cuenta?
+                <a href="./registro.html">
+                    Regístrate
+                </a>
+            </p>
+
+            <div class="auth-divider">
+                <span>O CONTINÚA SIN UNA CUENTA</span>
+            </div>
+
+            <a
+                href="../../index.html"
+                class="auth-guest"
+            >
+                Continuar como invitado →
+            </a>
+
+        </section>
+
+    </main>
+
+    <footer class="auth-footer">
+        © 2026 Essenzia · Perfumería de autor
+    </footer>
+
+</body>
+</html>

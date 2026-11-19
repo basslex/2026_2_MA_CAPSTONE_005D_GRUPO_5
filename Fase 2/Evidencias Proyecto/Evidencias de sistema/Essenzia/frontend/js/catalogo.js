@@ -4,16 +4,24 @@
    Archivo: frontend/js/catalogo.js
 
    Funcionalidades:
-   - Mostrar perfumes dinámicamente
+   - Consultar productos desde SQLite mediante API
+   - Mostrar únicamente productos activos
+   - Actualizar precios desde el administrador
    - Buscar por nombre y marca
-   - Filtrar por categoría, género y familia olfativa
+   - Filtrar por categoría, género y familia
    - Filtrar por ocasión y clima
    - Mostrar cantidad de resultados
-   - Tarjetas con precios en CLP
-   - Integración con el carrito de main.js
+   - Mantener integración con carrito de main.js
 ===================================================== */
 
-import { perfumes } from "./data/perfumes.js";
+const API_URL = "http://localhost:3000/api/productos";
+
+// Productos cargados desde el backend.
+let perfumes = [];
+
+// Estado de carga.
+let cargando = false;
+let errorCarga = null;
 
 // =====================================================
 // 1. FORMATO DE PRECIOS
@@ -24,7 +32,7 @@ const formatoPrecio = (precio) => {
         style: "currency",
         currency: "CLP",
         maximumFractionDigits: 0
-    }).format(precio);
+    }).format(Number(precio) || 0);
 };
 
 // =====================================================
@@ -54,41 +62,200 @@ const nombresFamilias = {
 };
 
 // =====================================================
-// 3. OBTENER FILTROS SELECCIONADOS
+// 3. FUNCIONES AUXILIARES
 // =====================================================
 
-function obtenerFiltros() {
+function normalizarLista(valor) {
+    if (Array.isArray(valor)) {
+        return valor;
+    }
+
+    if (typeof valor === "string") {
+        try {
+            const convertido = JSON.parse(valor);
+
+            if (Array.isArray(convertido)) {
+                return convertido;
+            }
+        } catch {
+            return valor
+                .split(",")
+                .map((item) => item.trim())
+                .filter(Boolean);
+        }
+    }
+
+    return [];
+}
+
+function escaparHTML(valor) {
+    return String(valor ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+}
+
+function normalizarProducto(producto) {
+    let datosExtra = producto.datos_extra || {};
+
+    if (typeof datosExtra === "string") {
+        try {
+            datosExtra = JSON.parse(datosExtra);
+        } catch {
+            datosExtra = {};
+        }
+    }
 
     return {
-        busqueda: document.querySelector("#search")
-            ?.value.trim().toLowerCase() || "",
+        ...datosExtra,
+        ...producto,
 
-        categoria: document.querySelector("#category")
-            ?.value || "",
+        id: Number(producto.id),
 
-        genero: document.querySelector("#gender")
-            ?.value || "",
+        nombre: producto.nombre || "",
+        marca: producto.marca || "",
 
-        familia: document.querySelector("#family")
-            ?.value || "",
+        categoria: producto.categoria || "",
+        genero: producto.genero || "",
+        familia: producto.familia || "",
 
-        ocasion: document.querySelector("#occasion")
-            ?.value || "",
+        precio: Number(producto.precio) || 0,
 
-        clima: document.querySelector("#climate")
-            ?.value || ""
+        imagen: producto.imagen || "",
+
+        ocasion: normalizarLista(
+            producto.ocasion ?? datosExtra.ocasion
+        ),
+
+        clima: normalizarLista(
+            producto.clima ?? datosExtra.clima
+        ),
+
+        shade: producto.shade ??
+            datosExtra.shade ??
+            "#e8e3da",
+
+        liquid: producto.liquid ??
+            datosExtra.liquid ??
+            "#d4af37",
+
+        activo: producto.activo
     };
 }
 
 // =====================================================
-// 4. FILTRAR PERFUMES
+// 4. OBTENER PRODUCTOS DESDE EL BACKEND
+// =====================================================
+
+export async function cargarProductos() {
+    if (cargando) return;
+
+    cargando = true;
+    errorCarga = null;
+
+    renderizarCatalogo();
+
+    try {
+        const respuesta = await fetch(API_URL, {
+            method: "GET",
+            headers: {
+                Accept: "application/json"
+            },
+            cache: "no-store"
+        });
+
+        if (!respuesta.ok) {
+            throw new Error(
+                `Error HTTP ${respuesta.status}`
+            );
+        }
+
+        const datos = await respuesta.json();
+
+        // Compatible con distintas estructuras
+        // habituales de respuesta del backend.
+        const lista = Array.isArray(datos)
+            ? datos
+            : Array.isArray(datos.productos)
+                ? datos.productos
+                : null;
+
+        if (!lista) {
+            throw new Error(
+                "La API no devolvió una lista de productos."
+            );
+        }
+
+        perfumes = lista
+            .map(normalizarProducto)
+            .filter((producto) =>
+                producto.activo === 1 ||
+                producto.activo === true ||
+                producto.activo === "1"
+            );
+
+        console.log(
+            `Essenzia: ${perfumes.length} productos activos cargados.`
+        );
+
+    } catch (error) {
+        console.error(
+            "Error cargando catálogo:",
+            error
+        );
+
+        errorCarga =
+            "No pudimos cargar los perfumes. " +
+            "Comprueba que el backend esté funcionando.";
+
+        perfumes = [];
+
+    } finally {
+        cargando = false;
+        renderizarCatalogo();
+    }
+}
+
+// =====================================================
+// 5. OBTENER FILTROS SELECCIONADOS
+// =====================================================
+
+function obtenerFiltros() {
+    return {
+        busqueda:
+            document.querySelector("#search")
+                ?.value.trim().toLowerCase() || "",
+
+        categoria:
+            document.querySelector("#category")
+                ?.value || "",
+
+        genero:
+            document.querySelector("#gender")
+                ?.value || "",
+
+        familia:
+            document.querySelector("#family")
+                ?.value || "",
+
+        ocasion:
+            document.querySelector("#occasion")
+                ?.value || "",
+
+        clima:
+            document.querySelector("#climate")
+                ?.value || ""
+    };
+}
+
+// =====================================================
+// 6. FILTRAR PERFUMES
 // =====================================================
 
 function filtrarPerfumes(filtros) {
-
     return perfumes.filter((perfume) => {
-
-        // Buscar por nombre o marca
         const textoBusqueda = (
             perfume.nombre + " " + perfume.marca
         ).toLowerCase();
@@ -97,32 +264,26 @@ function filtrarPerfumes(filtros) {
             !filtros.busqueda ||
             textoBusqueda.includes(filtros.busqueda);
 
-        // Categoría: Diseñador, Árabe o Nicho
         const coincideCategoria =
             !filtros.categoria ||
             perfume.categoria === filtros.categoria;
 
-        // Género
         const coincideGenero =
             !filtros.genero ||
             perfume.genero === filtros.genero;
 
-        // Familia olfativa
         const coincideFamilia =
             !filtros.familia ||
             perfume.familia === filtros.familia;
 
-        // Ocasión
         const coincideOcasion =
             !filtros.ocasion ||
             perfume.ocasion.includes(filtros.ocasion);
 
-        // Clima
         const coincideClima =
             !filtros.clima ||
             perfume.clima.includes(filtros.clima);
 
-        // Todas las condiciones deben cumplirse
         return (
             coincideBusqueda &&
             coincideCategoria &&
@@ -135,41 +296,55 @@ function filtrarPerfumes(filtros) {
 }
 
 // =====================================================
-// 5. CREAR TARJETA DE PERFUME
+// 7. CREAR TARJETA DE PERFUME
 // =====================================================
 
-
 function crearTarjeta(perfume) {
-
     const categoria =
-        nombresCategorias[perfume.categoria] || perfume.categoria;
+        nombresCategorias[perfume.categoria] ||
+        perfume.categoria;
 
     const genero =
-        nombresGeneros[perfume.genero] || perfume.genero;
+        nombresGeneros[perfume.genero] ||
+        perfume.genero;
 
     const familia =
-        nombresFamilias[perfume.familia] || perfume.familia;
+        nombresFamilias[perfume.familia] ||
+        perfume.familia;
+
+    const imagen = escaparHTML(perfume.imagen);
+    const nombre = escaparHTML(perfume.nombre);
+    const marca = escaparHTML(perfume.marca);
 
     return `
         <article class="product-card">
 
             <div
                 class="product-art"
-                style="--shade:${perfume.shade}; --liquid:${perfume.liquid};"
+                style="
+                    --shade:${escaparHTML(perfume.shade)};
+                    --liquid:${escaparHTML(perfume.liquid)};
+                "
             >
                 <span class="product-badge">
-                    ${categoria}
+                    ${escaparHTML(categoria)}
                 </span>
 
                 <img
                     class="product-image"
-                    src="${perfume.imagen}"
-                    alt="${perfume.marca} ${perfume.nombre}"
+                    src="${imagen}"
+                    alt="${marca} ${nombre}"
                     loading="lazy"
-                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    onerror="
+                        this.style.display='none';
+                        this.nextElementSibling.style.display='flex';
+                    "
                 >
 
-                <div class="mini-bottle" style="display:none;">
+                <div
+                    class="mini-bottle"
+                    style="display:none;"
+                >
                     <span>ESSENZIA</span>
                 </div>
 
@@ -178,15 +353,17 @@ function crearTarjeta(perfume) {
             <div class="product-info">
 
                 <small class="product-family">
-                    ${familia.toUpperCase()} · ${genero.toUpperCase()}
+                    ${escaparHTML(familia.toUpperCase())}
+                    ·
+                    ${escaparHTML(genero.toUpperCase())}
                 </small>
 
                 <p class="product-brand">
-                    ${perfume.marca}
+                    ${marca}
                 </p>
 
                 <h3 class="product-name">
-                    ${perfume.nombre}
+                    ${nombre}
                 </h3>
 
                 <p class="product-price">
@@ -218,42 +395,75 @@ function crearTarjeta(perfume) {
     `;
 }
 
-
 // =====================================================
-// 6. RENDERIZAR CATÁLOGO
+// 8. RENDERIZAR CATÁLOGO
 // =====================================================
 
 export function renderizarCatalogo() {
-
     const contenedor =
         document.querySelector("#product-grid");
 
     const contador =
         document.querySelector("#result-count");
 
-    // Evitar errores si no existe el contenedor
     if (!contenedor) {
-        console.warn(
-            "Essenzia: No se encontró #product-grid"
-        );
         return;
     }
 
-    // Obtener filtros actuales
+    if (cargando) {
+        contenedor.innerHTML = `
+            <div class="sin-resultados">
+                <h3>Cargando perfumes...</h3>
+                <p>Estamos preparando nuestra colección.</p>
+            </div>
+        `;
+
+        if (contador) {
+            contador.textContent = "Cargando...";
+        }
+
+        return;
+    }
+
+    if (errorCarga) {
+        contenedor.innerHTML = `
+            <div class="sin-resultados">
+                <h3>No se pudo cargar el catálogo</h3>
+                <p>${escaparHTML(errorCarga)}</p>
+                <button
+                    type="button"
+                    id="reintentar-catalogo"
+                    class="product-add"
+                >
+                    Reintentar
+                </button>
+            </div>
+        `;
+
+        if (contador) {
+            contador.textContent = "Catálogo no disponible";
+        }
+
+        contenedor
+            .querySelector("#reintentar-catalogo")
+            ?.addEventListener(
+                "click",
+                cargarProductos
+            );
+
+        return;
+    }
+
     const filtros = obtenerFiltros();
 
-    // Aplicar filtros
     const resultados = filtrarPerfumes(filtros);
 
-    // Actualizar contador
     if (contador) {
         contador.textContent =
             `${resultados.length} de ${perfumes.length} perfumes`;
     }
 
-    // Sin resultados
     if (resultados.length === 0) {
-
         contenedor.innerHTML = `
             <div class="sin-resultados">
 
@@ -270,17 +480,15 @@ export function renderizarCatalogo() {
         return;
     }
 
-    // Mostrar productos
     contenedor.innerHTML =
         resultados.map(crearTarjeta).join("");
 }
 
 // =====================================================
-// 7. INICIALIZAR FILTROS
+// 9. INICIALIZAR CATÁLOGO
 // =====================================================
 
 export function iniciarCatalogo() {
-
     const selectores = [
         "#search",
         "#category",
@@ -290,50 +498,41 @@ export function iniciarCatalogo() {
         "#climate"
     ];
 
-    // Escuchar cambios en búsqueda y filtros
     selectores.forEach((selector) => {
-
         const elemento =
             document.querySelector(selector);
 
         if (elemento) {
-
             elemento.addEventListener(
                 "input",
                 renderizarCatalogo
             );
-
         }
     });
 
-    // =================================================
-    // 8. FILTRAR DESDE LAS CATEGORÍAS DE LA HOME
-    // =================================================
-
-    document.querySelectorAll("[data-category]")
+    // Filtrar desde las categorías de la Home.
+    document
+        .querySelectorAll("[data-category]")
         .forEach((enlace) => {
+            enlace.addEventListener(
+                "click",
+                () => {
+                    const generoSeleccionado =
+                        enlace.dataset.category;
 
-            enlace.addEventListener("click", () => {
+                    const filtroGenero =
+                        document.querySelector("#gender");
 
-                const generoSeleccionado =
-                    enlace.dataset.category;
+                    if (filtroGenero) {
+                        filtroGenero.value =
+                            generoSeleccionado;
 
-                const filtroGenero =
-                    document.querySelector("#gender");
-
-                if (filtroGenero) {
-
-                    filtroGenero.value =
-                        generoSeleccionado;
-
-                    renderizarCatalogo();
+                        renderizarCatalogo();
+                    }
                 }
-            });
+            );
         });
 
-    // =================================================
-    // 9. MOSTRAR CATÁLOGO INICIAL
-    // =================================================
-
-    renderizarCatalogo();
+    // Cargar productos reales.
+    cargarProductos();
 }

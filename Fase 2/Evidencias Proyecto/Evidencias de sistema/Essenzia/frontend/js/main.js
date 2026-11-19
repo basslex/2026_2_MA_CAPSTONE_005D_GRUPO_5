@@ -3,26 +3,38 @@
    ESSENZIA - ARCHIVO PRINCIPAL
    Archivo: frontend/js/main.js
 
-   Funcionalidades:
-   - Inicialización del catálogo
-   - Carrito de compras
-   - Guardado en localStorage
-   - Contador de productos
-   - Menú móvil
+   - Catálogo conectado a SQLite
+   - Carrito persistente
+   - Precios actualizados
+   - Controles de cantidad
+   - Mercado Pago Checkout Pro
+   - Protección contra clics duplicados
 ===================================================== */
 
-// =====================================================
-// 1. IMPORTACIONES
-// =====================================================
-
-import { perfumes } from "./data/perfumes.js";
 import { iniciarCatalogo } from "./catalogo.js";
 
-// Selector de elementos HTML
+// =====================================================
+// 1. CONFIGURACIÓN
+// =====================================================
+
 const $ = (selector) => document.querySelector(selector);
 
+const API_URL = "http://localhost:3000";
+
+const CLAVE_CARRITO = "essenzia-cart";
+
+const MAX_UNIDADES = 20;
+
+let productosDisponibles = [];
+
+let catalogoCargado = false;
+
+let cargandoCatalogo = null;
+
+let procesandoPago = false;
+
 // =====================================================
-// 2. FORMATO DE PRECIOS CHILENOS
+// 2. FORMATO DE PRECIOS
 // =====================================================
 
 const formatoPrecio = (precio) => {
@@ -34,44 +46,41 @@ const formatoPrecio = (precio) => {
 };
 
 // =====================================================
-// 3. RECUPERAR CARRITO DESDE LOCALSTORAGE
+// 3. RECUPERAR CARRITO
 // =====================================================
 
 function cargarCarrito() {
     try {
         const guardado = JSON.parse(
-            localStorage.getItem("essenzia-cart") || "{}"
+            localStorage.getItem(CLAVE_CARRITO) || "{}"
         );
 
         if (
-            guardado === null ||
+            !guardado ||
             typeof guardado !== "object" ||
             Array.isArray(guardado)
         ) {
             return {};
         }
 
-        const carritoValido = {};
+        const resultado = {};
 
-        Object.entries(guardado).forEach(([id, cantidad]) => {
-            const perfumeExiste = perfumes.some(
-                (perfume) => String(perfume.id) === id
-            );
-
+        for (const [id, cantidad] of Object.entries(guardado)) {
             if (
-                perfumeExiste &&
-                Number.isInteger(cantidad) &&
-                cantidad > 0
+                /^[1-9]\d*$/.test(id) &&
+                Number.isSafeInteger(cantidad) &&
+                cantidad > 0 &&
+                cantidad <= MAX_UNIDADES
             ) {
-                carritoValido[id] = cantidad;
+                resultado[id] = cantidad;
             }
-        });
+        }
 
-        return carritoValido;
+        return resultado;
 
     } catch (error) {
         console.warn(
-            "No se pudo recuperar el carrito:",
+            "Error recuperando carrito:",
             error
         );
 
@@ -82,160 +91,364 @@ function cargarCarrito() {
 const carrito = cargarCarrito();
 
 // =====================================================
-// 4. GUARDAR CARRITO
+// 4. OBTENER CATÁLOGO DESDE SQLITE
+// =====================================================
+
+async function cargarCatalogoActualizado() {
+    if (cargandoCatalogo) {
+        return cargandoCatalogo;
+    }
+
+    cargandoCatalogo = (async () => {
+        const respuesta = await fetch(
+            `${API_URL}/api/productos`,
+            {
+                method: "GET",
+                cache: "no-store"
+            }
+        );
+
+        if (!respuesta.ok) {
+            throw new Error(
+                "No se pudo consultar el catálogo de Essenzia."
+            );
+        }
+
+        const datos = await respuesta.json();
+
+        if (!Array.isArray(datos.productos)) {
+            throw new Error(
+                "El servidor devolvió un catálogo inválido."
+            );
+        }
+
+        productosDisponibles = datos.productos.filter(
+            (producto) =>
+                Number.isSafeInteger(Number(producto.id)) &&
+                Number.isSafeInteger(Number(producto.precio)) &&
+                Number(producto.precio) > 0 &&
+                Number(producto.activo) === 1
+        );
+
+        catalogoCargado = true;
+
+        sincronizarCarrito();
+
+        return productosDisponibles;
+    })();
+
+    try {
+        return await cargandoCatalogo;
+
+    } finally {
+        cargandoCatalogo = null;
+    }
+}
+
+// =====================================================
+// 5. BUSCAR PRODUCTO
+// =====================================================
+
+function obtenerProducto(id) {
+    return productosDisponibles.find(
+        (producto) =>
+            String(producto.id) === String(id)
+    );
+}
+
+// =====================================================
+// 6. SINCRONIZAR CARRITO
+// =====================================================
+
+function sincronizarCarrito() {
+    if (!catalogoCargado) return;
+
+    let huboCambios = false;
+
+    for (const id of Object.keys(carrito)) {
+        if (!obtenerProducto(id)) {
+            delete carrito[id];
+            huboCambios = true;
+        }
+    }
+
+    if (huboCambios) {
+        console.info(
+            "Se retiraron del carrito productos no disponibles."
+        );
+    }
+
+    guardarCarrito();
+}
+
+// =====================================================
+// 7. GUARDAR CARRITO
 // =====================================================
 
 function guardarCarrito() {
+    try {
+        localStorage.setItem(
+            CLAVE_CARRITO,
+            JSON.stringify(carrito)
+        );
 
-    localStorage.setItem(
-        "essenzia-cart",
-        JSON.stringify(carrito)
-    );
+    } catch (error) {
+        console.warn(
+            "No se pudo guardar el carrito:",
+            error
+        );
+    }
 
     actualizarContador();
 }
 
 // =====================================================
-// 5. ACTUALIZAR CONTADOR DEL CARRITO
+// 8. CONTADOR
 // =====================================================
 
 function actualizarContador() {
-
     const contador = $("#cart-count");
 
     if (!contador) return;
 
     const cantidadTotal = Object.values(carrito)
-        .reduce((total, cantidad) => {
-            return total + cantidad;
-        }, 0);
+        .reduce(
+            (total, cantidad) => total + cantidad,
+            0
+        );
 
     contador.textContent = cantidadTotal;
 }
 
 // =====================================================
-// 6. CALCULAR TOTAL DEL CARRITO
+// 9. CALCULAR TOTAL
 // =====================================================
 
 function calcularTotal() {
+    return Object.entries(carrito).reduce(
+        (total, [id, cantidad]) => {
+            const producto = obtenerProducto(id);
 
-    return Object.entries(carrito)
-        .reduce((total, [id, cantidad]) => {
+            if (!producto) return total;
 
-            const perfume = perfumes.find(
-                (producto) => String(producto.id) === id
+            return (
+                total +
+                Number(producto.precio) * cantidad
             );
-
-            if (!perfume) return total;
-
-            return total + perfume.precio * cantidad;
-
-        }, 0);
+        },
+        0
+    );
 }
 
 // =====================================================
-// 7. MOSTRAR CARRITO
+// 10. MOSTRAR CARRITO
 // =====================================================
 
-function mostrarCarrito() {
-
+async function mostrarCarrito() {
     const dialogo = $("#cart-dialog");
+
     const contenedor = $("#cart-items");
+
     const totalElemento = $("#cart-total");
 
-    if (!dialogo || !contenedor || !totalElemento) {
+    const botonPagar = $("#checkout-button");
+
+    if (
+        !dialogo ||
+        !contenedor ||
+        !totalElemento
+    ) {
         console.warn(
             "Faltan elementos HTML del carrito."
         );
+
         return;
     }
 
-    const productos = Object.entries(carrito)
-        .filter(([, cantidad]) => cantidad > 0);
-
-    // Carrito vacío
-    if (productos.length === 0) {
-
-        contenedor.innerHTML = `
-            <p class="cart-empty">
-                Tu carrito está vacío.
-            </p>
-        `;
-
-    } else {
-
-        // Mostrar productos
-        contenedor.innerHTML = productos.map(([id, cantidad]) => {
-
-            const perfume = perfumes.find(
-                (producto) => String(producto.id) === id
-            );
-
-            if (!perfume) return "";
-
-            return `
-                <div class="cart-row">
-
-                    <div class="cart-product-info">
-                        <strong>${perfume.marca}</strong>
-                        <span>${perfume.nombre}</span>
-                        <small>
-                            Cantidad: ${cantidad}
-                        </small>
-                    </div>
-
-                    <div class="cart-product-actions">
-
-                        <span>
-                            ${formatoPrecio(
-                                perfume.precio * cantidad
-                            )}
-                        </span>
-
-                        <button
-                            type="button"
-                            data-remove="${id}"
-                            aria-label="Quitar una unidad de ${perfume.nombre}"
-                        >
-                            −
-                        </button>
-
-                    </div>
-
-                </div>
-            `;
-
-        }).join("");
+    if (!dialogo.open) {
+        dialogo.showModal();
     }
 
-    // Actualizar precio total
+    contenedor.textContent =
+        "Actualizando carrito...";
+
+    totalElemento.textContent =
+        "Total: —";
+
+    if (botonPagar) {
+        botonPagar.disabled = true;
+    }
+
+    try {
+        await cargarCatalogoActualizado();
+
+    } catch (error) {
+        console.error(
+            "Error actualizando carrito:",
+            error
+        );
+
+        contenedor.textContent =
+            "No se pudo consultar el catálogo. " +
+            "Comprueba que el backend esté funcionando.";
+
+        return;
+    }
+
+    const productos = Object.entries(carrito).filter(
+        ([id, cantidad]) =>
+            cantidad > 0 && obtenerProducto(id)
+    );
+
+    contenedor.replaceChildren();
+
+    if (productos.length === 0) {
+        const mensaje = document.createElement("p");
+
+        mensaje.className = "cart-empty";
+
+        mensaje.textContent =
+            "Tu carrito está vacío.";
+
+        contenedor.appendChild(mensaje);
+
+    } else {
+        for (const [id, cantidad] of productos) {
+            const perfume = obtenerProducto(id);
+
+            const fila = document.createElement("div");
+            fila.className = "cart-row";
+
+            const informacion = document.createElement("div");
+            informacion.className = "cart-product-info";
+
+            const marca = document.createElement("strong");
+            marca.textContent = perfume.marca;
+
+            const nombre = document.createElement("span");
+            nombre.textContent = perfume.nombre;
+
+            const cantidadTexto = document.createElement("small");
+            cantidadTexto.textContent =
+                `Cantidad: ${cantidad}`;
+
+            informacion.append(
+                marca,
+                nombre,
+                cantidadTexto
+            );
+
+            const acciones = document.createElement("div");
+            acciones.className = "cart-product-actions";
+
+            const precio = document.createElement("span");
+
+            precio.textContent = formatoPrecio(
+                Number(perfume.precio) * cantidad
+            );
+
+            // CONTROLES DE CANTIDAD
+            const controles = document.createElement("div");
+
+            controles.className =
+                "cart-quantity-controls";
+
+            const botonQuitar = document.createElement("button");
+
+            botonQuitar.type = "button";
+            botonQuitar.dataset.remove = id;
+            botonQuitar.textContent = "−";
+
+            botonQuitar.setAttribute(
+                "aria-label",
+                `Quitar una unidad de ${perfume.nombre}`
+            );
+
+            const indicador = document.createElement("span");
+
+            indicador.className =
+                "cart-quantity-value";
+
+            indicador.textContent = cantidad;
+
+            const botonAgregar = document.createElement("button");
+
+            botonAgregar.type = "button";
+            botonAgregar.dataset.increase = id;
+            botonAgregar.textContent = "+";
+
+            botonAgregar.disabled =
+                cantidad >= MAX_UNIDADES;
+
+            botonAgregar.setAttribute(
+                "aria-label",
+                `Agregar una unidad de ${perfume.nombre}`
+            );
+
+            controles.append(
+                botonQuitar,
+                indicador,
+                botonAgregar
+            );
+
+            acciones.append(
+                precio,
+                controles
+            );
+
+            fila.append(
+                informacion,
+                acciones
+            );
+
+            contenedor.appendChild(fila);
+        }
+    }
+
     totalElemento.textContent =
         `Total: ${formatoPrecio(calcularTotal())}`;
 
-    // Abrir modal solamente si está cerrado
-    if (!dialogo.open) {
-        dialogo.showModal();
+    if (botonPagar) {
+        botonPagar.disabled =
+            procesandoPago ||
+            productos.length === 0;
     }
 }
 
 // =====================================================
-// 8. AGREGAR PERFUME AL CARRITO
+// 11. AGREGAR PRODUCTO
 // =====================================================
 
 function agregarAlCarrito(id) {
-
-    const perfume = perfumes.find(
-        (producto) => String(producto.id) === String(id)
-    );
-
-    if (!perfume) {
+    if (!catalogoCargado) {
         console.warn(
-            "El perfume seleccionado no existe."
+            "El catálogo todavía no está disponible."
         );
+
         return false;
     }
 
-    carrito[id] = (carrito[id] || 0) + 1;
+    const producto = obtenerProducto(id);
+
+    if (!producto) {
+        alert(
+            "Este producto ya no está disponible."
+        );
+
+        return false;
+    }
+
+    const cantidadActual = carrito[id] || 0;
+
+    if (cantidadActual >= MAX_UNIDADES) {
+        alert(
+            `Puedes agregar como máximo ${MAX_UNIDADES} unidades.`
+        );
+
+        return false;
+    }
+
+    carrito[id] = cantidadActual + 1;
 
     guardarCarrito();
 
@@ -243,11 +456,10 @@ function agregarAlCarrito(id) {
 }
 
 // =====================================================
-// 9. QUITAR UNA UNIDAD DEL CARRITO
+// 12. QUITAR UNA UNIDAD
 // =====================================================
 
 function quitarDelCarrito(id) {
-
     if (!carrito[id]) return;
 
     carrito[id]--;
@@ -260,165 +472,493 @@ function quitarDelCarrito(id) {
 }
 
 // =====================================================
-// 10. CONFIGURAR MENÚ MÓVIL
+// 13. VALIDAR URL DE MERCADO PAGO
+// =====================================================
+
+function validarUrlMercadoPago(direccion) {
+    if (
+        typeof direccion !== "string" ||
+        !direccion.trim()
+    ) {
+        throw new Error(
+            "Mercado Pago no devolvió una URL válida."
+        );
+    }
+
+    let url;
+
+    try {
+        url = new URL(direccion);
+
+    } catch {
+        throw new Error(
+            "La URL de Mercado Pago no tiene un formato válido."
+        );
+    }
+
+    const dominio = url.hostname.toLowerCase();
+
+    const dominiosPermitidos = [
+        "mercadopago.cl",
+        "mercadopago.com",
+        "mercadopago.com.ar",
+        "mercadopago.com.br",
+        "mercadopago.com.co",
+        "mercadopago.com.mx",
+        "mercadopago.com.pe",
+        "mercadopago.com.uy"
+    ];
+
+    const permitido = dominiosPermitidos.some(
+        (base) =>
+            dominio === base ||
+            dominio.endsWith(`.${base}`)
+    );
+
+    if (
+        url.protocol !== "https:" ||
+        !permitido ||
+        url.username ||
+        url.password
+    ) {
+        throw new Error(
+            "La URL de pago no pertenece a un dominio autorizado."
+        );
+    }
+
+    console.info(
+        "Mercado Pago: dominio autorizado:",
+        dominio
+    );
+
+    return url;
+}
+
+// =====================================================
+// 14. RESTABLECER BOTÓN DE PAGO
+// =====================================================
+
+function restablecerBotonPago() {
+    procesandoPago = false;
+
+    const boton = $("#checkout-button");
+
+    if (!boton) return;
+
+    boton.textContent =
+        "Pagar con Mercado Pago";
+
+    const tieneProductos = Object.values(carrito)
+        .some((cantidad) => cantidad > 0);
+
+    boton.disabled = !tieneProductos;
+}
+
+// =====================================================
+// 15. PAGAR CON MERCADO PAGO
+// =====================================================
+
+async function pagarConMercadoPago(evento) {
+    // Evitar acciones predeterminadas y propagación.
+    if (evento) {
+        evento.preventDefault();
+        evento.stopPropagation();
+    }
+
+    console.info(
+        "Essenzia: clic en pagar recibido."
+    );
+
+    console.info(
+        "Essenzia: procesandoPago =",
+        procesandoPago
+    );
+
+    if (procesandoPago) {
+        console.warn(
+            "Ya existe una solicitud de pago en proceso."
+        );
+
+        return;
+    }
+
+    const botonPagar = $("#checkout-button");
+
+    procesandoPago = true;
+
+    if (botonPagar) {
+        botonPagar.disabled = true;
+        botonPagar.textContent =
+            "Preparando pago...";
+    }
+
+    try {
+        // Consultar los precios actuales desde SQLite.
+        await cargarCatalogoActualizado();
+
+        const productos = Object.entries(carrito)
+            .filter(
+                ([id, cantidad]) =>
+                    cantidad > 0 &&
+                    obtenerProducto(id)
+            )
+            .map(([id, cantidad]) => ({
+                id: Number(id),
+                cantidad
+            }));
+
+        if (productos.length === 0) {
+            throw new Error(
+                "Tu carrito está vacío o sus productos " +
+                "ya no están disponibles."
+            );
+        }
+
+        console.info(
+            "Essenzia: solicitando orden de pago.",
+            { cantidadProductos: productos.length }
+        );
+
+        // Solicitar una orden al backend.
+        const respuesta = await fetch(
+            `${API_URL}/api/pagos/crear`,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    productos
+                }),
+
+                cache: "no-store"
+            }
+        );
+
+        let datos;
+
+        try {
+            datos = await respuesta.json();
+
+        } catch {
+            throw new Error(
+                "El servidor devolvió una respuesta inválida."
+            );
+        }
+
+        console.info(
+            "Essenzia: respuesta del backend:",
+            {
+                codigoHTTP: respuesta.status,
+                orderId: datos.orderId || null,
+                tieneCheckoutUrl:
+                    Boolean(datos.checkoutUrl),
+                error: datos.error || null
+            }
+        );
+
+        if (!respuesta.ok) {
+            throw new Error(
+                datos.error ||
+                "No se pudo iniciar el pago."
+            );
+        }
+
+        if (!datos.checkoutUrl) {
+            throw new Error(
+                "El servidor no devolvió una URL de pago."
+            );
+        }
+
+        const urlPago = validarUrlMercadoPago(
+            datos.checkoutUrl
+        );
+
+        // Guardar el identificador de la última orden.
+        if (datos.orderId) {
+            sessionStorage.setItem(
+                "essenzia-ultima-orden",
+                String(datos.orderId)
+            );
+        }
+
+        console.info(
+            "Essenzia: iniciando redirección a:",
+            urlPago.hostname
+        );
+
+        // Navegar al checkout de Mercado Pago.
+        window.location.assign(urlPago.href);
+
+    } catch (error) {
+        console.error(
+            "Essenzia: error iniciando pago:",
+            error
+        );
+
+        alert(
+            error.message ||
+            "Ocurrió un problema al conectar con Mercado Pago."
+        );
+
+        restablecerBotonPago();
+
+        await mostrarCarrito();
+    }
+}
+
+// =====================================================
+// 16. MENÚ MÓVIL
 // =====================================================
 
 function configurarMenuMovil() {
-
     const botonMenu = $("#menu-toggle");
+
     const navegacion = $("#nav");
 
     if (!botonMenu || !navegacion) return;
 
-    botonMenu.addEventListener("click", () => {
+    botonMenu.addEventListener(
+        "click",
+        () => {
+            const abierto =
+                navegacion.classList.toggle("open");
 
-        const abierto =
-            navegacion.classList.toggle("open");
+            botonMenu.setAttribute(
+                "aria-expanded",
+                String(abierto)
+            );
+        }
+    );
 
-        botonMenu.setAttribute(
-            "aria-expanded",
-            String(abierto)
-        );
-    });
-
-    // Cerrar menú al seleccionar categoría
     document.querySelectorAll("[data-category]")
         .forEach((enlace) => {
+            enlace.addEventListener(
+                "click",
+                () => {
+                    navegacion.classList.remove("open");
 
-            enlace.addEventListener("click", () => {
-
-                navegacion.classList.remove("open");
-
-                botonMenu.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-            });
+                    botonMenu.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+                }
+            );
         });
 }
 
 // =====================================================
-// 11. CONFIGURAR BOTONES DEL CATÁLOGO
+// 17. BOTONES DEL CATÁLOGO
 // =====================================================
 
 function configurarBotonesCatalogo() {
-
     const contenedor = $("#product-grid");
 
     if (!contenedor) return;
 
-    // Delegación de eventos:
-    // funciona aunque los filtros regeneren las tarjetas
-    contenedor.addEventListener("click", (evento) => {
+    contenedor.addEventListener(
+        "click",
+        (evento) => {
+            const boton = evento.target.closest(
+                "[data-add]"
+            );
 
-        const boton = evento.target.closest("[data-add]");
-
-        if (!boton || !contenedor.contains(boton)) {
-            return;
-        }
-
-        const id = boton.dataset.add;
-
-        const agregado = agregarAlCarrito(id);
-
-        if (!agregado) return;
-
-        // Confirmación visual
-        boton.textContent = "¡Agregado! ✓";
-        boton.disabled = true;
-
-        setTimeout(() => {
-
-            if (boton.isConnected) {
-                boton.textContent = "Agregar al carrito +";
-                boton.disabled = false;
+            if (
+                !boton ||
+                !contenedor.contains(boton)
+            ) {
+                return;
             }
 
-        }, 900);
-    });
+            evento.preventDefault();
+
+            const agregado = agregarAlCarrito(
+                boton.dataset.add
+            );
+
+            if (!agregado) return;
+
+            // Confirmación visual breve.
+            boton.textContent = "¡Agregado! ✓";
+            boton.disabled = true;
+
+            setTimeout(() => {
+                if (boton.isConnected) {
+                    boton.textContent =
+                        "Agregar al carrito +";
+
+                    boton.disabled = false;
+                }
+            }, 900);
+        }
+    );
 }
 
 // =====================================================
-// 12. CONFIGURAR EVENTOS DEL CARRITO
+// 18. EVENTOS DEL CARRITO
 // =====================================================
 
 function configurarEventosCarrito() {
-
     const botonCarrito = $("#cart-button");
+
     const botonCerrar = $("#close-cart");
+
     const dialogo = $("#cart-dialog");
+
     const contenedor = $("#cart-items");
 
-    // Abrir carrito
+    const botonPagar = $("#checkout-button");
+
     if (botonCarrito) {
         botonCarrito.addEventListener(
             "click",
-            mostrarCarrito
+            (evento) => {
+                evento.preventDefault();
+
+                mostrarCarrito();
+            }
         );
     }
 
-    // Cerrar carrito
     if (botonCerrar && dialogo) {
-        botonCerrar.addEventListener("click", () => {
-            dialogo.close();
-        });
+        botonCerrar.addEventListener(
+            "click",
+            (evento) => {
+                evento.preventDefault();
+
+                dialogo.close();
+            }
+        );
     }
 
-    // Quitar productos
     if (contenedor) {
+        contenedor.addEventListener(
+            "click",
+            async (evento) => {
+                const botonQuitar =
+                    evento.target.closest(
+                        "[data-remove]"
+                    );
 
-        contenedor.addEventListener("click", (evento) => {
+                const botonAgregar =
+                    evento.target.closest(
+                        "[data-increase]"
+                    );
 
-            const boton =
-                evento.target.closest("[data-remove]");
+                if (botonQuitar) {
+                    evento.preventDefault();
 
-            if (!boton) return;
+                    quitarDelCarrito(
+                        botonQuitar.dataset.remove
+                    );
 
-            const id = boton.dataset.remove;
+                    await mostrarCarrito();
 
-            quitarDelCarrito(id);
+                    return;
+                }
 
-            // Actualizar contenido sin cerrar el modal
-            mostrarCarrito();
-        });
+                if (botonAgregar) {
+                    evento.preventDefault();
+
+                    agregarAlCarrito(
+                        botonAgregar.dataset.increase
+                    );
+
+                    await mostrarCarrito();
+                }
+            }
+        );
+    }
+
+    if (botonPagar) {
+        // Mantenerlo como botón normal, no de formulario.
+        botonPagar.type = "button";
+
+        botonPagar.addEventListener(
+            "click",
+            pagarConMercadoPago
+        );
+
+    } else {
+        console.warn(
+            "No se encontró #checkout-button."
+        );
     }
 }
 
 // =====================================================
-// 13. INICIALIZAR ESSENZIA
+// 19. INICIALIZAR APLICACIÓN
 // =====================================================
 
-function iniciarAplicacion() {
-
-    // Inicializar contador
+async function iniciarAplicacion() {
     actualizarContador();
 
-    // Inicializar catálogo y filtros
-    iniciarCatalogo();
-
-    // Configurar menú móvil
     configurarMenuMovil();
 
-    // Configurar botones de productos
     configurarBotonesCatalogo();
 
-    // Configurar carrito
     configurarEventosCarrito();
 
-    console.log(
-        "Essenzia: catálogo y carrito inicializados."
-    );
+    iniciarCatalogo();
+
+    try {
+        await cargarCatalogoActualizado();
+
+        console.info(
+            "Essenzia: carrito sincronizado con SQLite."
+        );
+
+    } catch (error) {
+        console.error(
+            "No se pudo sincronizar el carrito:",
+            error
+        );
+    }
 }
 
-// Ejecutar cuando el HTML esté listo
-if (document.readyState === "loading") {
+// =====================================================
+// 20. RESTABLECER CHECKOUT AL REGRESAR
+// =====================================================
 
+window.addEventListener(
+    "pageshow",
+    () => {
+        restablecerBotonPago();
+
+        console.info(
+            "Essenzia: checkout disponible nuevamente."
+        );
+    }
+);
+
+// =====================================================
+// 21. DIAGNÓSTICO DE NAVEGACIÓN
+// =====================================================
+
+// Ayuda a identificar recargas inesperadas.
+window.addEventListener(
+    "pagehide",
+    () => {
+        console.info(
+            "Essenzia: el navegador está saliendo de la página."
+        );
+    }
+);
+
+// =====================================================
+// 22. EJECUTAR
+// =====================================================
+
+if (document.readyState === "loading") {
     document.addEventListener(
         "DOMContentLoaded",
-        iniciarAplicacion
+        iniciarAplicacion,
+        { once: true }
     );
 
 } else {
-
     iniciarAplicacion();
 }

@@ -1,0 +1,24 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Reportes | Admin Essenzia</title>
+    <link rel="stylesheet" href="../../css/admin.css">
+    <script type="module">
+    import { verificarAdministrador }
+        from "../../js/admin/admin-auth.js";
+
+    const autorizado = await verificarAdministrador();
+
+    if (autorizado) {
+        await import("../../js/admin/admin.js");
+    }
+</script>
+</head>
+<body data-admin-page="reportes">
+    <div id="admin-app"></div>
+</body>
+</html>

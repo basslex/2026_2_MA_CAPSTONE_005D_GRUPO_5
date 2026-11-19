@@ -2351,7 +2351,9 @@ h3 {
         transition: none;
     }
 
-    /* ESSENZIA MATCH — agregar al final de frontend/css/style.css */
+}
+
+/* ESSENZIA MATCH — estilos generales */
 .match-page { background:#f8f6f2; min-height:calc(100vh - 210px); padding-bottom:90px; }
 .match-header-main { justify-content:space-between; }
 .match-header-link { color:#c5a879; text-decoration:none; font-size:14px; font-weight:600; }
@@ -2528,6 +2530,98 @@ h3 {
     }
 }
 
+/* ==========================================================
+   30. ACCESO A CUENTA - HEADER ESSENZIA
+========================================================== */
+.header .header-main .account-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    flex: 0 0 auto;
+    padding: 11px 14px;
+    border: 1px solid #c5a879;
+    border-radius: 7px;
+    background: #26221a;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
+.header .header-main .account-link svg {
+    display: block;
+    width: 21px;
+    height: 21px;
+    flex-shrink: 0;
+    stroke: #c5a879;
+}
 
+.header .header-main .account-link:hover {
+    background: #3b3326;
+    border-color: #e2c28c;
+}
+
+.header .header-main .account-link:focus-visible {
+    outline: 2px solid #c5a879;
+    outline-offset: 3px;
+}
+
+@media (max-width: 992px) {
+    .header .header-main { gap: 15px; }
+    .header .header-main .account-link { padding: 10px; }
+    .header .header-main .account-link span { display: none; }
+}
+
+@media (max-width: 650px) {
+    .header .header-main .account-link {
+        order: 3;
+        margin-left: auto;
+    }
+    .header .header-main .bag {
+        order: 4;
+        margin-left: 0;
+    }
+    .header .header-main .search { order: 5; }
+
+
+/* Controles de cantidad del carrito */
+
+.cart-quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.cart-quantity-controls button {
+    width: 34px;
+    height: 34px;
+    border: 1px solid #d8d3cc;
+    border-radius: 7px;
+    background: #fff;
+    color: #173e38;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.cart-quantity-controls button:hover:not(:disabled) {
+    background: #173e38;
+    color: #fff;
+}
+
+.cart-quantity-controls button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.cart-quantity-value {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 600;
+}
+
+}

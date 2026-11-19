@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Gestiona tu perfil, favoritos y pedidos en Essenzia."
+    >
+
+    <title>Mi cuenta | Essenzia</title>
+
+    <link
+        rel="stylesheet"
+        href="../../css/cuenta.css"
+    >
+
+    <script
+        type="module"
+        src="../../js/cuenta.js"
+    ></script>
+
+    <script
+    type="module"
+    src="../../js/cuenta-sesion.js"
+></script>
+</head>
+
+<body>
+
+    <header class="cuenta-header">
+        <a href="../../index.html">
+            <img
+                src="../../img/logo-essenzia.jpg"
+                alt="Essenzia"
+                class="cuenta-logo"
+            >
+        </a>
+
+        <a
+            href="../../index.html"
+            class="volver-tienda"
+        >
+            ← Volver a la tienda
+        </a>
+    </header>
+
+    <main class="cuenta-main">
+
+        <div class="cuenta-container">
+
+            <div class="cuenta-heading">
+                <span class="eyebrow">
+                    MI ESPACIO ESSENZIA
+                </span>
+
+                <h1>Mi cuenta</h1>
+
+                <p>
+                    Gestiona tus fragancias favoritas,
+                    tus datos personales y tus pedidos.
+                </p>
+            </div>
+
+            <div class="cuenta-layout">
+
+                <!-- MENÚ LATERAL -->
+                <aside class="cuenta-sidebar">
+
+                    <div class="cuenta-usuario">
+                        <div class="usuario-avatar">
+                            <span id="usuario-inicial">?</span>
+                        </div>
+
+                        <div>
+                            <strong id="usuario-nombre">
+                                Invitado
+                            </strong>
+
+                            <small id="usuario-email">
+                                Sin sesión iniciada
+                            </small>
+                        </div>
+                    </div>
+
+                    <nav
+                        class="cuenta-menu"
+                        aria-label="Opciones de mi cuenta"
+                    >
+                        <button
+                            type="button"
+                            class="menu-item active"
+                            data-panel="resumen"
+                        >
+                            ◈ Resumen
+                        </button>
+
+                        <button
+                            type="button"
+                            class="menu-item"
+                            data-panel="favoritos"
+                        >
+                            ♡ Mis favoritos
+                        </button>
+
+                        <button
+                            type="button"
+                            class="menu-item"
+                            data-panel="pedidos"
+                        >
+                            ▣ Mis pedidos
+                        </button>
+
+                        <button
+                            type="button"
+                            class="menu-item"
+                            data-panel="datos"
+                        >
+                            ♙ Mis datos
+                        </button>
+                    </nav>
+
+                    <a
+                        id="cuenta-acceso"
+                        href="../auth/login.html"
+                        class="cuenta-acceso"
+                    >
+                        Iniciar sesión
+                    </a>
+
+                </aside>
+
+                <!-- CONTENIDO -->
+                <div class="cuenta-contenido">
+
+                    <!-- RESUMEN -->
+                    <section
+                        class="cuenta-panel"
+                        id="panel-resumen"
+                    >
+                        <h2>Bienvenido a Essenzia</h2>
+
+                        <p>
+                            Descubre fragancias que reflejen
+                            tu personalidad y guarda tus
+                            favoritas en un solo lugar.
+                        </p>
+
+                        <div class="resumen-grid">
+
+                            <article class="resumen-card">
+                                <span>♡</span>
+
+                                <strong id="total-favoritos">
+                                    0
+                                </strong>
+
+                                <small>
+                                    Perfumes favoritos
+                                </small>
+                            </article>
+
+                            <article class="resumen-card">
+                                <span>▣</span>
+
+                                <strong id="total-pedidos">
+                                    0
+                                </strong>
+
+                                <small>
+                                    Pedidos registrados
+                                </small>
+                            </article>
+
+                        </div>
+
+                        <a
+                            href="../../index.html#catalogo"
+                            class="cuenta-button"
+                        >
+                            Explorar perfumes →
+                        </a>
+                    </section>
+
+                    <!-- FAVORITOS -->
+                    <section
+                        class="cuenta-panel"
+                        id="panel-favoritos"
+                        hidden
+                    >
+                        <h2>Mi lista de deseos</h2>
+
+                        <p>
+                            Aquí aparecerán las fragancias
+                            que guardes como favoritas.
+                        </p>
+
+                        <div id="lista-favoritos"></div>
+                    </section>
+
+                    <!-- PEDIDOS -->
+                    <section
+                        class="cuenta-panel"
+                        id="panel-pedidos"
+                        hidden
+                    >
+                        <h2>Mis pedidos</h2>
+
+                        <p>
+                            Consulta el historial de tus
+                            compras realizadas en Essenzia.
+                        </p>
+
+                        <div class="cuenta-vacio">
+                            <span>▣</span>
+
+                            <h3>
+                                Historial próximamente
+                            </h3>
+
+                            <p>
+                                Conectaremos esta sección
+                                con los pedidos guardados
+                                en nuestra base de datos.
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- DATOS PERSONALES -->
+                    <section
+                        class="cuenta-panel"
+                        id="panel-datos"
+                        hidden
+                    >
+                        <h2>Mis datos personales</h2>
+
+                        <p>
+                            Aquí podrás consultar y editar
+                            la información de tu cuenta.
+                        </p>
+
+                        <div class="cuenta-vacio">
+                            <span>♙</span>
+
+                            <h3>
+                                Perfil próximamente
+                            </h3>
+
+                            <p>
+                                Los datos personales estarán
+                                disponibles cuando conectemos
+                                la autenticación con el servidor.
+                            </p>
+                        </div>
+                    </section>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="cuenta-footer">
+        © 2026 Essenzia · Perfumería de autor
+    </footer>
+
+</body>
+</html>
